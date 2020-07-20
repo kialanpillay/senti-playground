@@ -1,16 +1,31 @@
 .App {
   text-align: center;
   background-color: white;
+  min-height: 100vh;
 }
 
 .title {
   text-align: center;
-  font-size: 8rem;
+  font-size: 4rem;
   letter-spacing: 1rem;
-  margin-top: 6rem;
-  width: 100%;
+  margin-top: 2rem;
 }
 
-.tag {
-  text-align: center;
+.heading {
+  text-align: left;
+  font-size: 6rem;
+}
+
+.text {
+  text-align: left;
+}
+
+.brand{
+  letter-spacing: 1rem;
+}
+
+.username {
+  text-align: right;
+  margin-right: 1rem;
+  color: white
 }
