@@ -33,3 +33,7 @@
 .link, .link:hover {
   color: orange;
 }
+
+.code {
+  font-family: monospace;
+}

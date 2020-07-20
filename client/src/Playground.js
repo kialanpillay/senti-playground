@@ -9,12 +9,16 @@ import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
+import Table from "react-bootstrap/Table";
+import Icon from "@material-ui/core/Icon";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import Amplify, { Auth, Hub } from "aws-amplify";
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import { AmplifySignOut } from "@aws-amplify/ui-react";
 import awsconfig from "./aws-exports";
+
+import copy from "copy-to-clipboard";
 
 Amplify.configure(awsconfig);
 
@@ -26,6 +30,7 @@ const listener = (data) => {
   }
 };
 Hub.listen("auth", listener);
+const api = "https://senti-ment-api.herokuapp.com/";
 
 class Playground extends Component {
   constructor(props) {
@@ -37,32 +42,53 @@ class Playground extends Component {
       response: "",
       score: [],
       req: false,
-      reqType: "",
+      route: "",
     };
 
+    this.handleCopy = this.handleCopy.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleAnalysis = this.handleAnalysis.bind(this);
   }
+
+  queryBuilder = (params) => {
+    let query = Object.keys(params)
+      .map((k) => encodeURIComponent(k) + "=" + encodeURIComponent(params[k]))
+      .join("&");
+    return query;
+  };
+
+  curlBuilder = () => {
+    let url = this.requestBuilder();
+    return `curl -X GET ${url}`;
+  };
+
+  requestBuilder = () => {
+    return (
+      api + this.state.route + this.queryBuilder({ text: this.state.text })
+    );
+  };
+
+  handleCopy = () => {
+    let content = this.curlBuilder();
+    try {
+      copy(content);
+    } catch {
+      console.log("Error");
+    }
+  };
 
   handleChange = (event) => {
     this.setState({ text: event.target.value });
   };
 
-  handleAnalysis = (type) => {
+  handleAnalysis = (route) => {
     let params = {
       text: this.state.text,
     };
-    console.log(type);
-    this.setState({ reqType: type });
-    let query = Object.keys(params)
-      .map((k) => encodeURIComponent(k) + "=" + encodeURIComponent(params[k]))
-      .join("&");
-    let url = "https://senti-ment-api.herokuapp.com/";
-    if (type === "bayes") {
-      url = url + "bayes/" + query;
-    } else {
-      url = url + "vader/" + query;
-    }
+    this.setState({ route: route });
+    let query = this.queryBuilder(params);
+
+    let url = api + route + query;
 
     fetch(url, {
       method: "GET",
@@ -142,10 +168,10 @@ class Playground extends Component {
                   title="Analyse"
                   id="input-group-dropdown-2"
                 >
-                  <Dropdown.Item onClick={() => this.handleAnalysis("bayes")}>
+                  <Dropdown.Item onClick={() => this.handleAnalysis("bayes/")}>
                     Naive Bayes
                   </Dropdown.Item>
-                  <Dropdown.Item onClick={() => this.handleAnalysis("vader")}>
+                  <Dropdown.Item onClick={() => this.handleAnalysis("vader/")}>
                     VADER
                   </Dropdown.Item>
                 </DropdownButton>
@@ -155,13 +181,46 @@ class Playground extends Component {
           <Row style={{ marginTop: "2rem" }}>
             <Col md={10}>
               <h4 className="text" hidden={!this.state.req}>
-                {this.state.reqType === "bayes"
+                {this.state.route === "bayes/"
                   ? "Naive Bayes indicates that your text is " +
-                    this.state.response.toLowerCase()
+                    this.state.response.compound
                   : this.state.response.compound > 0.05
                   ? "VADER indicates that your text is positive"
                   : "VADER indicates that your text is negative"}
               </h4>
+            </Col>
+          </Row>
+          <Row style={{ marginTop: "2rem" }}>
+            <Col md={6}>
+              <Table hidden={!this.state.req} style={{ textAlign: "left" }}>
+                <thead>
+                  <tr>
+                    <th>
+                      <Icon
+                        style={{
+                          fontSize: 20,
+                          color: "orange",
+                        }}
+                        onClick={this.handleCopy}
+                      >
+                        content_copy
+                      </Icon>{" "}
+                      cURL Command
+                    </th>
+                    <th>Type</th>
+                    <th>Classification</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="code">{this.curlBuilder()}</td>
+                    <td>
+                      {this.state.route === "bayes/" ? "Naive Bayes" : "VADER"}
+                    </td>
+                    <td>{this.state.response.compound}</td>
+                  </tr>
+                </tbody>
+              </Table>
             </Col>
           </Row>
         </Container>
