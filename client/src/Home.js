@@ -13,10 +13,6 @@ import awsconfig from "./aws-exports";
 Amplify.configure(awsconfig);
 
 class Home extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div className="App">
@@ -33,7 +29,7 @@ class Home extends Component {
               <h1 className="heading">Blazingly fast sentiment analysis</h1>
             </Col>
             <Col md={3}>
-              <img src={masks} width={250}></img>
+              <img src={masks} width={250} alt="Theatre Masks"></img>
             </Col>
           </Row>
           <Row style={{ marginTop: "2rem" }}>
@@ -52,7 +48,6 @@ class Home extends Component {
           </Row>
           <Row style={{ marginTop: "2rem" }}>
             <Col md="auto">
-              <h4 className="text"></h4>
             </Col>
           </Row>
         </Container>

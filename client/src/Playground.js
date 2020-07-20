@@ -5,6 +5,8 @@ import Nav from "react-bootstrap/Nav";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -17,7 +19,7 @@ import awsconfig from "./aws-exports";
 Amplify.configure(awsconfig);
 
 const listener = (data) => {
-  if (data.payload.event == "signIn") {
+  if (data.payload.event === "signIn") {
     console.log("user signed in");
   } else {
     console.log("user signed out");
@@ -32,6 +34,10 @@ class Playground extends Component {
       username: "",
       auth: false,
       text: "",
+      response: "",
+      score: [],
+      req: false,
+      reqType: "",
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -42,16 +48,22 @@ class Playground extends Component {
     this.setState({ text: event.target.value });
   };
 
-  handleAnalysis = () => {
+  handleAnalysis = (type) => {
     let params = {
       text: this.state.text,
     };
-
+    console.log(type);
+    this.setState({ reqType: type });
     let query = Object.keys(params)
       .map((k) => encodeURIComponent(k) + "=" + encodeURIComponent(params[k]))
       .join("&");
+    let url = "https://senti-ment-api.herokuapp.com/";
+    if (type === "bayes") {
+      url = url + "bayes/" + query;
+    } else {
+      url = url + "vader/" + query;
+    }
 
-    let url = "http://127.0.0.1:5000/senti/" + query;
     fetch(url, {
       method: "GET",
       headers: {
@@ -62,8 +74,8 @@ class Playground extends Component {
       .then((response) => response.json())
       .then((result) => {
         this.setState({
-          score: result.score,
-          classification: result.classification,
+          response: result.classification,
+          req: true,
         });
       })
       .catch(function (error) {
@@ -81,8 +93,12 @@ class Playground extends Component {
       <div className="App">
         <Navbar bg="dark" variant="dark">
           <Navbar.Brand href="/">
-            <h3>Senti | Playground</h3>
+            <h3>Playground</h3>
           </Navbar.Brand>
+          <Nav className="mr-auto">
+            <Nav.Link href="/playground">Senti API</Nav.Link>
+            <Nav.Link href="/comprehend">AWS Comprehend</Nav.Link>
+          </Nav>
           <Navbar.Collapse className="justify-content-end">
             <Navbar.Text>
               <h5 className="username">Signed in as {this.state.username}</h5>
@@ -94,32 +110,58 @@ class Playground extends Component {
         <Container style={{ marginTop: "6rem" }}>
           <Row>
             <Col md={10}>
-              <h1 className="heading">Welcome to Senti API</h1>
+              <h1 className="heading">Introducing Senti API</h1>
             </Col>
           </Row>
-          <Row style={{ marginTop: "2rem" }}>
+          <Row style={{ marginTop: "0rem" }}>
             <Col md="auto">
               <h2 className="text">
-                A playground to learn about Natural Language Processing.
+                A Python{" "}
+                <a
+                  className="link"
+                  href="https://senti-ment-api.herokuapp.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  API
+                </a>{" "}
+                for Sentiment Analysis using NLTK. Try it out.
               </h2>
+            </Col>
+          </Row>
+          <Row style={{ marginTop: "4rem" }}>
+            <Col md={10}>
+              <InputGroup className="mb-3" size="lg">
+                <FormControl
+                  placeholder="Text to classify"
+                  onChange={this.handleChange}
+                />
+                <DropdownButton
+                  as={InputGroup.Append}
+                  variant="outline-secondary"
+                  title="Analyse"
+                  id="input-group-dropdown-2"
+                >
+                  <Dropdown.Item onClick={() => this.handleAnalysis("bayes")}>
+                    Naive Bayes
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => this.handleAnalysis("vader")}>
+                    VADER
+                  </Dropdown.Item>
+                </DropdownButton>
+              </InputGroup>
             </Col>
           </Row>
           <Row style={{ marginTop: "2rem" }}>
             <Col md={10}>
-              <InputGroup className="mb-3" size="lg">
-                <FormControl
-                  placeholder="Your text here"
-                  onChange={this.handleChange}
-                />
-                <InputGroup.Append>
-                  <Button
-                    variant="outline-secondary"
-                    onClick={() => this.handleAnalysis()}
-                  >
-                    Analyse
-                  </Button>
-                </InputGroup.Append>
-              </InputGroup>
+              <h4 className="text" hidden={!this.state.req}>
+                {this.state.reqType === "bayes"
+                  ? "Naive Bayes indicates that your text is " +
+                    this.state.response.toLowerCase()
+                  : this.state.response.compound > 0.05
+                  ? "VADER indicates that your text is positive"
+                  : "VADER indicates that your text is negative"}
+              </h4>
             </Col>
           </Row>
         </Container>

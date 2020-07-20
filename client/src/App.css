@@ -29,3 +29,7 @@
   margin-right: 1rem;
   color: white
 }
+
+.link, .link:hover {
+  color: orange;
+}
