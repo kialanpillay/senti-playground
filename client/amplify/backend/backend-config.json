@@ -1,0 +1,17 @@
+{
+	"auth": {
+		"senti5bd15d12": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [],
+			"customAuth": false
+		}
+	},
+	"predictions": {
+		"interpretText8f4b3a8b": {
+			"providerPlugin": "awscloudformation",
+			"service": "Comprehend",
+			"interpretType": "interpretText"
+		}
+	}
+}

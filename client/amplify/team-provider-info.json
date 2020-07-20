@@ -1,0 +1,20 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-senti-dev-120142-authRole",
+            "UnauthRoleArn": "arn:aws:iam::818297521594:role/amplify-senti-dev-120142-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::818297521594:role/amplify-senti-dev-120142-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-senti-dev-120142-deployment",
+            "UnauthRoleName": "amplify-senti-dev-120142-unauthRole",
+            "StackName": "amplify-senti-dev-120142",
+            "StackId": "arn:aws:cloudformation:us-east-1:818297521594:stack/amplify-senti-dev-120142/075d62d0-ca70-11ea-a825-12f0216d258f",
+            "AmplifyAppId": "d326y2f9qgagyn"
+        },
+        "categories": {
+            "auth": {
+                "senti5bd15d12": {}
+            }
+        }
+    }
+}
