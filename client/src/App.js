@@ -24,7 +24,7 @@ function App() {
           <Route exact path="/senti">
             <Playground />
           </Route>
-          <Route exact path="/all">
+          <Route exact path="/engine">
             <Engine />
           </Route>
         </Switch>
