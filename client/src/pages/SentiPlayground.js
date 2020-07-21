@@ -2,17 +2,14 @@ import React, { Component } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
-import Table from "react-bootstrap/Table";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import Amplify, { Auth, Hub } from "aws-amplify";
 import { withAuthenticator } from "@aws-amplify/ui-react";
-import { AmplifySignOut } from "@aws-amplify/ui-react";
 import awsconfig from "../aws-exports";
 
 import copy from "copy-to-clipboard";
@@ -32,7 +29,7 @@ const listener = (data) => {
 Hub.listen("auth", listener);
 const api = "https://senti-ment-api.herokuapp.com/";
 
-class Playground extends Component {
+class SentiPlayground extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -43,6 +40,7 @@ class Playground extends Component {
       score: [],
       req: false,
       route: "",
+      api: "Senti"
     };
 
     this.handleCopy = this.handleCopy.bind(this);
@@ -169,7 +167,7 @@ class Playground extends Component {
             req={this.state.req}
             text={this.state.text}
             response={this.state.response}
-            api={"Senti"}
+            api={this.state.api}
             curl={this.curlBuilder()}
             copyHandler={this.copyHandler}
           />
@@ -179,4 +177,4 @@ class Playground extends Component {
   }
 }
 
-export default withAuthenticator(Playground);
+export default withAuthenticator(SentiPlayground);

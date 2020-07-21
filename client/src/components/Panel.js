@@ -17,7 +17,7 @@ export default function Panel(props) {
           <Card hidden={!props.req} style={{ textAlign: "left" }}>
             <Card.Body>
               <Card.Title>Sentiment Analysis by {props.api}</Card.Title>
-              <Card.Subtitle className="mb-2 text-muted">
+              <Card.Subtitle className="mb-2 text-muted" hidden={props.api !== "Senti"}>
                 {props.route === "bayes/"
                   ? "Naive Bayes Method - "
                   : "VADER Method - "}{" "}
@@ -57,7 +57,7 @@ export default function Panel(props) {
       </Row>
       <Row style={{ marginTop: "0rem" }}>
         <Col md={10}>
-          <Table hidden={!(props.req && props.api === "Senti")} style={{ textAlign: "left" }}>
+          <Table hidden={!(props.req && props.api !== "AWS")} style={{ textAlign: "left" }}>
             <thead>
               <tr>
                 <th style={{ borderTop: "0px", borderBottom: "2px" }}>
