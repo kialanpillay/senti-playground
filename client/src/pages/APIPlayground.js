@@ -14,10 +14,8 @@ import Predictions, {
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import awsconfig from "../aws-exports";
 
-import copy from "copy-to-clipboard";
-
 import Navigation from "../components/Navigation";
-import Panel from "../components/Panel";
+import ResultCard from "../components/Panel";
 
 Amplify.configure(awsconfig);
 Amplify.addPluggable(new AmazonAIPredictionsProvider());
@@ -38,17 +36,40 @@ class APIPlayground extends Component {
       username: "",
       auth: false,
       text: "",
-      response: "",
+      prediction: null,
+      response: null,
       req: false,
     };
 
-    this.handleCopy = this.handleCopy.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleAPICall = this.handleAPICall.bind(this);
-    this.handleAWSComprehension = this.handleAWSComprehension.bind(this);
+    this.handleCall = this.handleCall.bind(this);
+    this.handleAWSAnalysis = this.handleAWSAnalysis.bind(this);
+    this.processResponse = this.processResponse.bind(this);
   }
 
-  handleAWSComprehension = () => {
+  processResponse = (api) => {
+    let data;
+    console.log(this.state.response);
+    if (api === "AWS") {
+      data = {
+        classification: this.state.prediction.predominant,
+        pos: this.state.prediction.positive,
+        neg: this.state.prediction.negative,
+        neu: this.state.prediction.neutral,
+      };
+    }
+    if (api === "fyhao") {
+      data = {
+        classification: this.state.response.pos > 0.5 ? "Positive" : "Negative",
+        pos: this.state.response.pos,
+        neg: this.state.response.neg,
+        neu: this.state.response.mid,
+      };
+    }
+    return data;
+  };
+
+  handleAWSAnalysis = () => {
     this.setState({ req: false, api: "AWS" });
     Predictions.interpret({
       text: {
@@ -60,53 +81,40 @@ class APIPlayground extends Component {
     })
       .then((result) => {
         this.setState({
-          response: result.textInterpretation.sentiment,
+          prediction: result.textInterpretation.sentiment,
           req: true,
         });
       })
       .catch((err) => console.log({ err }));
   };
 
-  queryBuilder = (params) => {
-    let query = Object.keys(params)
-      .map((k) => encodeURIComponent(k) + "=" + encodeURIComponent(params[k]))
-      .join("&");
-    return query;
-  };
-
-  requestBuilder = (api) => {
-    return api + this.queryBuilder({ text: this.state.text });
-  };
-
-  handleCopy = () => {
-    let content = this.curlBuilder();
-    try {
-      copy(content);
-    } catch {
-      console.log("Error");
-    }
-  };
-
   handleChange = (event) => {
     this.setState({ text: event.target.value, req: false });
   };
 
-  handleAPICall = (api) => {
+  handleCall = () => {
+    this.handleAWSAnalysis();
+    this.handleAnalysis();
+  };
+
+  handleAnalysis = () => {
     this.setState({ req: false });
-    let url = this.requestBuilder(api);
+    let url = "https://text-sentiment.p.rapidapi.com/analyze";
 
     fetch(url, {
-      method: "GET",
+      method: "POST",
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        "x-rapidapi-host": "text-sentiment.p.rapidapi.com",
+        "x-rapidapi-key": "646e81359bmsh810817ffde70fc2p16998cjsn345cdec67f45",
+      },
+      body: {
+        text: this.state.text,
       },
     })
       .then((response) => response.json())
       .then((result) => {
         this.setState({
-          response: result.classification,
-          req: true,
+          response: result,
         });
       })
       .catch(function (error) {
@@ -147,7 +155,7 @@ class APIPlayground extends Component {
                   <Button
                     variant="outline-secondary"
                     disabled={this.state.text === ""}
-                    onClick={() => this.handleAWSComprehension()}
+                    onClick={() => this.handleCall()}
                   >
                     Analyse
                   </Button>
@@ -155,17 +163,37 @@ class APIPlayground extends Component {
               </InputGroup>
             </Col>
           </Row>
-          {this.state.req ? (
-            <Panel
-              link={""}
-              req={this.state.req}
-              text={this.state.text}
-              response={this.state.response}
-              api={"AWS"}
-              method={"AWS Comprehend"}
-              copyHandler={this.copyHandler}
-            />
-          ) : null}
+          <Row
+            style={{ marginTop: "2rem" }}
+            hidden={
+              this.state.prediction == null || this.state.response == null
+            }
+          >
+            <Col md={4}>
+              {this.state.prediction != null ? (
+                <ResultCard
+                  link={""}
+                  req={true}
+                  text={this.state.text}
+                  response={this.processResponse("AWS")}
+                  api={"AWS"}
+                  method={"AWS Comprehend"}
+                />
+              ) : null}
+            </Col>{" "}
+            <Col md={4}>
+              {this.state.response != null ? (
+                <ResultCard
+                  link={""}
+                  req={true}
+                  text={this.state.text}
+                  response={this.processResponse("fyhao")}
+                  api={"fyhao"}
+                  method={"Text Sentiment Analysis"}
+                />
+              ) : null}
+            </Col>
+          </Row>
         </Container>
       </div>
     );
