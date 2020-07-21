@@ -135,7 +135,7 @@ class Playground extends Component {
             <Col md={10}>
               <InputGroup className="mb-3" size="lg">
                 <FormControl
-                  placeholder="Text to classify"
+                  placeholder="Your text here"
                   onChange={this.handleChange}
                 />
                 <DropdownButton

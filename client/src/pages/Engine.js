@@ -48,6 +48,7 @@ class Engine extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleCall = this.handleCall.bind(this);
+    this.handleAnalysis = this.handleAnalysis.bind(this);
     this.handleAWSAnalysis = this.handleAWSAnalysis.bind(this);
     this.processResponse = this.processResponse.bind(this);
   }
@@ -164,7 +165,7 @@ class Engine extends Component {
             <Col md={10}>
               <InputGroup className="mb-3" size="lg">
                 <FormControl
-                  placeholder="Text to classify"
+                  placeholder="Your text here"
                   onChange={this.handleChange}
                 />
                 <InputGroup.Append>
@@ -191,7 +192,7 @@ class Engine extends Component {
                   req={true}
                   text={this.state.text}
                   response={this.processResponse("AWS")}
-                  api={"AWS"}
+                  api={"Amazon Web Services"}
                   method={"AWS Comprehend"}
                 />
               ) : null}
@@ -205,7 +206,7 @@ class Engine extends Component {
                   req={true}
                   text={this.state.text}
                   response={this.processResponse("fyhao")}
-                  api={"fyhao"}
+                  api={"fyhao c/o RapidAPI"}
                   method={"Text Sentiment Analysis"}
                 />
               ) : null}

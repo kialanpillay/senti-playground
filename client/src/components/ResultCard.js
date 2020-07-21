@@ -11,7 +11,7 @@ export default function ResultCard(props) {
   return (
     <Card hidden={!props.req} style={{ textAlign: "left", width: "22rem" }}>
       <Card.Body>
-        <Card.Title>Sentiment Analysis by {props.api}</Card.Title>
+        <Card.Title>{props.api}</Card.Title>
         <Card.Subtitle
           className="mb-2 text-muted"
         >
