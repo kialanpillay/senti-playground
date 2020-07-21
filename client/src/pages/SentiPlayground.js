@@ -54,14 +54,14 @@ class SentiPlayground extends Component {
     return query;
   };
 
-  curlBuilder = () => {
-    let url = this.requestBuilder();
+  curlBuilder = (route) => {
+    let url = this.requestBuilder(route);
     return `curl -X GET ${url}`;
   };
 
-  requestBuilder = () => {
+  requestBuilder = (route) => {
     return (
-      api + this.state.route + this.queryBuilder({ text: this.state.text })
+      api + route + this.queryBuilder({ text: this.state.text })
     );
   };
 
@@ -79,12 +79,8 @@ class SentiPlayground extends Component {
   };
 
   handleAnalysis = (route) => {
-    let params = {
-      text: this.state.text,
-    };
     this.setState({ route: route, req: false });
-    let url = this.requestBuilder();
-
+    let url = this.requestBuilder(route);
     fetch(url, {
       method: "GET",
       headers: {
@@ -165,7 +161,7 @@ class SentiPlayground extends Component {
             text={this.state.text}
             response={this.state.response}
             api={this.state.api}
-            curl={this.curlBuilder()}
+            curl={this.curlBuilder(this.state.route)}
             copyHandler={this.copyHandler}
           />
         </Container>
