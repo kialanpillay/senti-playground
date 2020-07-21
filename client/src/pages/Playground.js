@@ -29,7 +29,7 @@ const listener = (data) => {
 Hub.listen("auth", listener);
 const api = "https://senti-ment-api.herokuapp.com/";
 
-class SentiPlayground extends Component {
+class Playground extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -170,4 +170,4 @@ class SentiPlayground extends Component {
   }
 }
 
-export default withAuthenticator(SentiPlayground);
+export default withAuthenticator(Playground);

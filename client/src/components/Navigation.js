@@ -13,7 +13,7 @@ export default function Navigation(props) {
       </Navbar.Brand>
       <Nav className="mr-auto" hidden={!props.auth}>
         <Nav.Link href="/senti">Senti Playground</Nav.Link>
-        <Nav.Link href="/all">NLP API Playground</Nav.Link>
+        <Nav.Link href="/all">Sentiment Engine</Nav.Link>
       </Nav>
       <Navbar.Collapse className="justify-content-end" >
         <Navbar.Text hidden={!props.auth}>

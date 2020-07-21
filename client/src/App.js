@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import SentiPlayground from "./pages/SentiPlayground";
-import APIPlayground from "./pages/APIPlayground";
+import Playground from "./pages/Playground";
+import Engine from "./pages/Engine";
 import Home from "./pages/Home";
 
 import Amplify from "aws-amplify";
@@ -22,10 +22,10 @@ function App() {
             <Home />
           </Route>
           <Route exact path="/senti">
-            <SentiPlayground />
+            <Playground />
           </Route>
           <Route exact path="/all">
-            <APIPlayground />
+            <Engine />
           </Route>
         </Switch>
       </Router>

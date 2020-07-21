@@ -5,7 +5,12 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
+import Table from "react-bootstrap/FormControl";
 import "bootstrap/dist/css/bootstrap.min.css";
+
+import rapid from "../assets/rapid.png";
+import aws from "../assets/aws.png";
+import azure from "../assets/azure.png";
 
 import Amplify, { Auth, Hub } from "aws-amplify";
 import Predictions, {
@@ -29,7 +34,7 @@ const listener = (data) => {
 };
 Hub.listen("auth", listener);
 
-class APIPlayground extends Component {
+class Engine extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -134,7 +139,7 @@ class APIPlayground extends Component {
         <Container style={{ marginTop: "4rem" }}>
           <Row>
             <Col md={10}>
-              <h1 className="heading">API Playground</h1>
+              <h1 className="heading">Sentiment Engine</h1>
             </Col>
           </Row>
           <Row style={{ marginTop: "0rem" }}>
@@ -144,7 +149,18 @@ class APIPlayground extends Component {
               </h2>
             </Col>
           </Row>
-          <Row style={{ marginTop: "3rem" }}>
+          <Row style={{ marginTop: "1rem", textAlign: "left" }}>
+            <Col md="auto">
+              <img src={aws} width={200} alt="Amazon Web Services"></img>
+            </Col>
+            <Col md="auto">
+              <img src={azure} width={300} alt="Microsoft Azure"></img>
+            </Col>
+            <Col md="auto">
+              <img src={rapid} width={100} alt="RapidAPI"></img>
+            </Col>
+          </Row>
+          <Row style={{ marginTop: "2rem" }}>
             <Col md={10}>
               <InputGroup className="mb-3" size="lg">
                 <FormControl
@@ -164,7 +180,6 @@ class APIPlayground extends Component {
             </Col>
           </Row>
           <Row
-            style={{ marginTop: "2rem" }}
             hidden={
               this.state.prediction == null || this.state.response == null
             }
@@ -172,7 +187,7 @@ class APIPlayground extends Component {
             <Col md={4}>
               {this.state.prediction != null ? (
                 <ResultCard
-                  link={""}
+                  link={"https://aws.amazon.com/comprehend/"}
                   req={true}
                   text={this.state.text}
                   response={this.processResponse("AWS")}
@@ -184,7 +199,9 @@ class APIPlayground extends Component {
             <Col md={4}>
               {this.state.response != null ? (
                 <ResultCard
-                  link={""}
+                  link={
+                    "https://rapidapi.com/fyhao/api/text-sentiment-analysis-method/"
+                  }
                   req={true}
                   text={this.state.text}
                   response={this.processResponse("fyhao")}
@@ -200,4 +217,4 @@ class APIPlayground extends Component {
   }
 }
 
-export default withAuthenticator(APIPlayground);
+export default withAuthenticator(Engine);
