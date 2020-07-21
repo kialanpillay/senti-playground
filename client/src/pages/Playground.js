@@ -4,19 +4,19 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Table from "react-bootstrap/Table";
-import Icon from "@material-ui/core/Icon";
+import CopyButton from "../components/CopyButton";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import Amplify, { Auth, Hub } from "aws-amplify";
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import { AmplifySignOut } from "@aws-amplify/ui-react";
-import awsconfig from "./aws-exports";
+import awsconfig from "../aws-exports";
 
 import copy from "copy-to-clipboard";
 import Speech from "react-speech";
@@ -134,7 +134,7 @@ class Playground extends Component {
             {this.state.auth ? null : null}
           </Navbar.Collapse>
         </Navbar>
-        <Container style={{ marginTop: "6rem" }}>
+        <Container style={{ marginTop: "4rem" }}>
           <Row>
             <Col md={10}>
               <h1 className="heading">Introducing Senti API</h1>
@@ -156,7 +156,7 @@ class Playground extends Component {
               </h2>
             </Col>
           </Row>
-          <Row style={{ marginTop: "4rem" }}>
+          <Row style={{ marginTop: "3rem" }}>
             <Col md={10}>
               <InputGroup className="mb-3" size="lg">
                 <FormControl
@@ -181,57 +181,45 @@ class Playground extends Component {
           </Row>
           <Row style={{ marginTop: "2rem" }}>
             <Col md={6}>
+              <Card hidden={!this.state.req} style={{ textAlign: "left" }}>
+                <Card.Body>
+                  <Card.Title>Sentiment Analysis by Senti</Card.Title>
+                  <Card.Subtitle className="mb-2 text-muted">
+                    {this.state.route === "bayes/"
+                      ? "Naive Bayes Method"
+                      : "VADER Method"}
+                  </Card.Subtitle>
+
+                  <h5>
+                    {this.state.req
+                      ? this.state.response.classification
+                      : null}
+                  </h5>
+                  <Speech
+                    textAsButton={true}
+                    displayText="Listen"
+                    text={`The sentence, ${this.state.text}, is ${this.state.response.classification}.`}
+                  />
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+          <Row style={{ marginTop: "1rem" }}>
+            <Col md={6}>
               <Table hidden={!this.state.req} style={{ textAlign: "left" }}>
                 <thead>
                   <tr>
                     <th>
-                      <Icon
-                        style={{
-                          fontSize: 20,
-                          color: "orange",
-                        }}
-                        onClick={this.handleCopy}
-                      >
-                        content_copy
-                      </Icon>{" "}
-                      cURL Command
+                      <CopyButton handler={this.handleCopy} /> cURL Command
                     </th>
-                    <th>Type</th>
-                    <th>Classification</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td className="code">{this.curlBuilder()}</td>
-                    <td>
-                      {this.state.route === "bayes/" ? "Naive Bayes" : "VADER"}
-                    </td>
-                    <td>{this.state.response.classification}</td>
                   </tr>
                 </tbody>
               </Table>
-            </Col>
-          </Row>
-          <Row style={{ marginTop: "0rem" }}>
-            <Col md="auto">
-              {this.state.req ? (
-                <h4 className="text" hidden={!this.state.req}>
-                  {this.state.route === "bayes/"
-                    ? `Naive Bayes indicates that your text is
-                      ${this.state.response.classification}.`
-                    : `VADER indicates that your text is
-                    ${this.state.response.classification}.`}
-                </h4>
-              ) : null}
-            </Col>
-            <Col md="auto">
-              {this.state.req ? (
-                <Speech
-                  textAsButton={true}
-                  displayText="Listen"
-                  text={`The sentence, ${this.state.text}, is ${this.state.response.classification}.`}
-                />
-              ) : null}
             </Col>
           </Row>
         </Container>

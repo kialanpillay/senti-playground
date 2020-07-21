@@ -5,10 +5,10 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Navbar from "react-bootstrap/Navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
-import masks from "./assets/masks.png";
+import masks from "../assets/masks.png";
 
 import Amplify from "aws-amplify";
-import awsconfig from "./aws-exports";
+import awsconfig from "../aws-exports";
 
 Amplify.configure(awsconfig);
 

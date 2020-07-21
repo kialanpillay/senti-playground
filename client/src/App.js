@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import Playground from "./Playground";
-import Home from "./Home";
+import Playground from "./pages/Playground";
+import Home from "./pages/Home";
 
 import Amplify from "aws-amplify";
 import Predictions, {
