@@ -31,7 +31,6 @@ const listener = (data) => {
   }
 };
 Hub.listen("auth", listener);
-const api = "https://senti-ment-api.herokuapp.com/";
 
 class APIPlayground extends Component {
   constructor(props) {
@@ -41,17 +40,17 @@ class APIPlayground extends Component {
       auth: false,
       text: "",
       response: "",
-      score: [],
       req: false,
-      api: "",
     };
 
     this.handleCopy = this.handleCopy.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleAnalysis = this.handleAnalysis.bind(this);
+    this.handleAWSComprehension = this.handleAWSComprehension.bind(this);
   }
 
-  handleComprehension = () => {
+  handleAWSComprehension = () => {
+    this.setState({ req: false, api: "AWS" });
     Predictions.interpret({
       text: {
         source: {
@@ -60,7 +59,12 @@ class APIPlayground extends Component {
         type: "ALL",
       },
     })
-      .then((result) => console.log({ result }))
+      .then((result) => {
+        this.setState({
+          response: result.textInterpretation.sentiment,
+          req: true,
+        });
+      })
       .catch((err) => console.log({ err }));
   };
 
@@ -71,14 +75,9 @@ class APIPlayground extends Component {
     return query;
   };
 
-  curlBuilder = () => {
-    let url = this.requestBuilder();
-    return `curl -X GET ${url}`;
-  };
-
-  requestBuilder = () => {
+  requestBuilder = (api) => {
     return (
-      api + this.state.route + this.queryBuilder({ text: this.state.text })
+      api + this.queryBuilder({ text: this.state.text })
     );
   };
 
@@ -95,14 +94,12 @@ class APIPlayground extends Component {
     this.setState({ text: event.target.value, req: false });
   };
 
-  handleAnalysis = (route) => {
+  handleAnalysis = (api) => {
     let params = {
       text: this.state.text,
     };
-    this.setState({ route: route, req: false });
-    let query = this.queryBuilder(params);
-
-    let url = api + route + query;
+    this.setState({ req: false });
+    let url = this.requestBuilder(api);
 
     fetch(url, {
       method: "GET",
@@ -141,7 +138,7 @@ class APIPlayground extends Component {
           <Row style={{ marginTop: "0rem" }}>
             <Col md="auto">
               <h2 className="text">
-                A selection of the latest Natural Language Processing APIs.
+                Compare results from different Natural Language Processing APIs.
               </h2>
             </Col>
           </Row>
@@ -159,22 +156,26 @@ class APIPlayground extends Component {
                   id="input-group-dropdown-2"
                   disabled={this.state.text === ""}
                 >
-                  <Dropdown.Item onClick={() => this.handleComprehension()}>
+                  <Dropdown.Item onClick={() => this.handleAWSComprehension()}>
                     AWS Comprehend
                   </Dropdown.Item>
                 </DropdownButton>
               </InputGroup>
             </Col>
           </Row>
-          <Panel
-            route={""}
-            req={this.state.req}
-            text={this.state.text}
-            response={this.state.response}
-            api={this.state.api}
-            curl={this.state.api === "AWS" ? this.curlBuilder() : ""}
-            copyHandler={this.copyHandler}
-          />
+          {this.state.req ? (
+            <Panel
+              link={""}
+              req={this.state.req}
+              text={this.state.text}
+              response={this.state.response}
+              api={"AWS"}
+              method={"AWS Comprehend"}
+              copyHandler={this.copyHandler}
+            />
+          ) : (
+            null
+          )}
         </Container>
       </div>
     );
