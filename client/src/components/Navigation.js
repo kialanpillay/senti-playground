@@ -11,7 +11,7 @@ export default function Navigation(props) {
       </Navbar.Brand>
       <Nav className="mr-auto">
         <Nav.Link href="/senti">Senti API</Nav.Link>
-        <Nav.Link href="/all">AWS Comprehend</Nav.Link>
+        <Nav.Link href="/all">NLP API Playground</Nav.Link>
       </Nav>
       <Navbar.Collapse className="justify-content-end">
         <Navbar.Text>
