@@ -20,7 +20,7 @@ import { withAuthenticator } from "@aws-amplify/ui-react";
 import awsconfig from "../aws-exports";
 
 import Navigation from "../components/Navigation";
-import ResultCard from "../components/Panel";
+import AnalysisCard from "../components/AnalysisCard";
 
 Amplify.configure(awsconfig);
 Amplify.addPluggable(new AmazonAIPredictionsProvider());
@@ -181,17 +181,18 @@ class Engine extends Component {
             </Col>
           </Row>
           <Row
+            style={{ marginTop: "2rem" }}
             hidden={
               this.state.prediction == null || this.state.response == null
             }
           >
             <Col md={4}>
               {this.state.prediction != null ? (
-                <ResultCard
+                <AnalysisCard
                   link={"https://aws.amazon.com/comprehend/"}
                   req={true}
                   text={this.state.text}
-                  response={this.processResponse("AWS")}
+                  data={this.processResponse("AWS")}
                   api={"Amazon Web Services"}
                   method={"AWS Comprehend"}
                 />
@@ -199,13 +200,13 @@ class Engine extends Component {
             </Col>{" "}
             <Col md={4}>
               {this.state.response != null ? (
-                <ResultCard
+                <AnalysisCard
                   link={
                     "https://rapidapi.com/fyhao/api/text-sentiment-analysis-method/"
                   }
                   req={true}
                   text={this.state.text}
-                  response={this.processResponse("fyhao")}
+                  data={this.processResponse("fyhao")}
                   api={"fyhao c/o RapidAPI"}
                   method={"Text Sentiment Analysis"}
                 />

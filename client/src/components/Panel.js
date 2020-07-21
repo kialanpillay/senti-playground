@@ -5,7 +5,7 @@ import Table from "react-bootstrap/Table";
 
 import CopyButton from "./CopyButton";
 import SentimentScorePieChart from "./SentimentScorePieChart";
-import ResultCard from "./ResultCard";
+import AnalysisCard from "./AnalysisCard";
 
 export default function Panel(props) {
   let link;
@@ -26,7 +26,7 @@ export default function Panel(props) {
     <div>
       <Row style={{ marginTop: "2rem" }}>
         <Col md={4}>
-          <ResultCard
+          <AnalysisCard
             req={props.req}
             method={method}
             api={props.api}

@@ -8,9 +8,10 @@ String.prototype.toSentenceCase = function () {
   return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 };
 
-export default function ResultCard(props) {
+export default function AnalysisCard(props) {
+  console.log(props)
   return (
-    <Card hidden={!props.req} style={{ textAlign: "left", width: "22rem" }}>
+    <Card hidden={!props.req} style={{ textAlign: "left"}}>
       <Card.Body>
         <Card.Title>{props.api}</Card.Title>
         <Card.Subtitle
