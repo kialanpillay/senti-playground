@@ -55,7 +55,6 @@ class Engine extends Component {
 
   processResponse = (api) => {
     let data;
-    console.log(this.state.response);
     if (api === "AWS") {
       data = {
         classification: this.state.prediction.predominant,
@@ -76,7 +75,6 @@ class Engine extends Component {
   };
 
   handleAWSAnalysis = () => {
-    this.setState({ req: false, api: "AWS" });
     Predictions.interpret({
       text: {
         source: {
@@ -88,7 +86,6 @@ class Engine extends Component {
       .then((result) => {
         this.setState({
           prediction: result.textInterpretation.sentiment,
-          req: true,
         });
       })
       .catch((err) => console.log({ err }));
