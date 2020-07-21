@@ -46,7 +46,7 @@ class Home extends Component {
           </Row>
           <Row style={{ marginTop: "2rem" }}>
             <Col md="auto">
-              <Button variant="dark" size="lg" href="/playground/senti">
+              <Button variant="dark" size="lg" href="/senti">
                 Explore
               </Button>
             </Col>

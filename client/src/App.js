@@ -21,10 +21,10 @@ function App() {
           <Route exact path="/">
             <Home />
           </Route>
-          <Route exact path="/playground/senti">
+          <Route exact path="/senti">
             <SentiPlayground />
           </Route>
-          <Route exact path="/playground/all">
+          <Route exact path="/all">
             <APIPlayground />
           </Route>
         </Switch>
