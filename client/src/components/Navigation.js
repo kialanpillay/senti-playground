@@ -7,15 +7,17 @@ export default function Navigation(props) {
   return (
     <Navbar bg="dark" variant="dark">
       <Navbar.Brand href="/">
-        <h3>Playground</h3>
+        <span>
+          <h3 className="brand">SENTI</h3>
+        </span>
       </Navbar.Brand>
-      <Nav className="mr-auto">
-        <Nav.Link href="/senti">Senti API</Nav.Link>
+      <Nav className="mr-auto" hidden={!props.auth}>
+        <Nav.Link href="/senti">Senti Playground</Nav.Link>
         <Nav.Link href="/all">NLP API Playground</Nav.Link>
       </Nav>
-      <Navbar.Collapse className="justify-content-end">
-        <Navbar.Text>
-          <h5 className="username">Signed in as {props.username}</h5>
+      <Navbar.Collapse className="justify-content-end" >
+        <Navbar.Text hidden={!props.auth}>
+          <h5 className="username">Signed in as {props.auth ? props.username : null}</h5>
         </Navbar.Text>
 
         {props.auth ? null : null}

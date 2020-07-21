@@ -8,6 +8,7 @@ import Card from "react-bootstrap/Card";
 import Icon from "@material-ui/core/Icon";
 import "bootstrap/dist/css/bootstrap.min.css";
 import masks from "../assets/masks.png";
+import Navigation from "../components/Navigation";
 
 import Amplify from "aws-amplify";
 import awsconfig from "../aws-exports";
@@ -44,13 +45,7 @@ class Home extends Component {
   render() {
     return (
       <div className="App">
-        <Navbar bg="dark" variant="dark">
-          <Navbar.Brand href="/">
-            <span>
-              <h3 className="brand">SENTI</h3>
-            </span>
-          </Navbar.Brand>
-        </Navbar>
+        <Navigation auth={false} />
         <Container style={{ marginTop: "4rem" }}>
           <Row>
             <Col md={9}>
