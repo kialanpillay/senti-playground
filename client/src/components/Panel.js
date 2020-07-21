@@ -8,17 +8,6 @@ import SentimentScorePieChart from "./SentimentScorePieChart";
 import ResultCard from "./ResultCard";
 
 export default function Panel(props) {
-  let data;
-  if (props.api === "AWS") {
-    data = {
-      classification: props.response.predominant,
-      pos: props.response.positive,
-      neg: props.response.negative,
-      neu: props.response.neutral,
-    };
-  } else {
-    data = props.response;
-  }
   let link;
   let method;
   if (props.hasOwnProperty("route")) {
@@ -31,6 +20,7 @@ export default function Panel(props) {
     link = props.link;
     method = props.method;
   }
+  const data = props.response;
 
   return (
     <div>
