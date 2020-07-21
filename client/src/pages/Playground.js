@@ -10,7 +10,6 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Table from "react-bootstrap/Table";
-import CopyButton from "../components/CopyButton";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import Amplify, { Auth, Hub } from "aws-amplify";
@@ -20,6 +19,9 @@ import awsconfig from "../aws-exports";
 
 import copy from "copy-to-clipboard";
 import Speech from "react-speech";
+
+import CopyButton from "../components/CopyButton";
+import SentimentScorePieChart from "../components/SentimentScorePieChart";
 
 Amplify.configure(awsconfig);
 
@@ -187,13 +189,14 @@ class Playground extends Component {
                   <Card.Subtitle className="mb-2 text-muted">
                     {this.state.route === "bayes/"
                       ? "Naive Bayes Method"
-                      : "VADER Method"}
+                      : "VADER Method"}{" "}
+                    <a href="/" target="_blank" className="link">
+                      Learn More
+                    </a>
                   </Card.Subtitle>
 
                   <h5>
-                    {this.state.req
-                      ? this.state.response.classification
-                      : null}
+                    {this.state.req ? this.state.response.classification : null}
                   </h5>
                   <Speech
                     textAsButton={true}
@@ -203,8 +206,16 @@ class Playground extends Component {
                 </Card.Body>
               </Card>
             </Col>
+            <Col>
+              {this.state.req ? (
+                <SentimentScorePieChart
+                  data={this.state.response}
+                  route={this.state.route}
+                />
+              ) : null}
+            </Col>
           </Row>
-          <Row style={{ marginTop: "1rem" }}>
+          <Row style={{ marginTop: "0rem" }}>
             <Col md={6}>
               <Table hidden={!this.state.req} style={{ textAlign: "left" }}>
                 <thead>
