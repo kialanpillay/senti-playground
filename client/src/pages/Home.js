@@ -13,6 +13,11 @@ import awsconfig from "../aws-exports";
 Amplify.configure(awsconfig);
 
 class Home extends Component {
+
+  async componentDidMount(){
+
+  }
+
   render() {
     return (
       <div className="App">
@@ -41,7 +46,7 @@ class Home extends Component {
           </Row>
           <Row style={{ marginTop: "2rem" }}>
             <Col md="auto">
-              <Button variant="dark" size="lg" href="/playground">
+              <Button variant="dark" size="lg" href="/playground/senti">
                 Explore
               </Button>
             </Col>

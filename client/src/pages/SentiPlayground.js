@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import Container from "react-bootstrap/Container";
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
@@ -18,10 +16,9 @@ import { AmplifySignOut } from "@aws-amplify/ui-react";
 import awsconfig from "../aws-exports";
 
 import copy from "copy-to-clipboard";
-import Speech from "react-speech";
 
-import CopyButton from "../components/CopyButton";
-import SentimentScorePieChart from "../components/SentimentScorePieChart";
+import Navigation from "../components/Navigation";
+import Panel from "../components/Panel";
 
 Amplify.configure(awsconfig);
 
@@ -120,22 +117,7 @@ class Playground extends Component {
   render() {
     return (
       <div className="App">
-        <Navbar bg="dark" variant="dark">
-          <Navbar.Brand href="/">
-            <h3>Playground</h3>
-          </Navbar.Brand>
-          <Nav className="mr-auto">
-            <Nav.Link href="/playground">Senti API</Nav.Link>
-            <Nav.Link href="/comprehend">AWS Comprehend</Nav.Link>
-          </Nav>
-          <Navbar.Collapse className="justify-content-end">
-            <Navbar.Text>
-              <h5 className="username">Signed in as {this.state.username}</h5>
-            </Navbar.Text>
-
-            {this.state.auth ? null : null}
-          </Navbar.Collapse>
-        </Navbar>
+        <Navigation username={this.state.username} auth={this.state.auth} />
         <Container style={{ marginTop: "4rem" }}>
           <Row>
             <Col md={10}>
@@ -182,58 +164,15 @@ class Playground extends Component {
               </InputGroup>
             </Col>
           </Row>
-          <Row style={{ marginTop: "2rem" }}>
-            <Col md={6}>
-              <Card hidden={!this.state.req} style={{ textAlign: "left" }}>
-                <Card.Body>
-                  <Card.Title>Sentiment Analysis by Senti</Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    {this.state.route === "bayes/"
-                      ? "Naive Bayes Method - "
-                      : "VADER Method - "}{" "}
-                    <a href="/" target="_blank" className="link">
-                      Learn More
-                    </a>
-                  </Card.Subtitle>
-
-                  <h5>
-                    {this.state.req ? this.state.response.classification : null}
-                  </h5>
-                  <Speech
-                    textAsButton={true}
-                    displayText="Listen"
-                    text={`The sentence, ${this.state.text}, is ${this.state.response.classification}.`}
-                  />
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col>
-              {this.state.req ? (
-                <SentimentScorePieChart
-                  data={this.state.response}
-                  route={this.state.route}
-                />
-              ) : null}
-            </Col>
-          </Row>
-          <Row style={{ marginTop: "0rem" }}>
-            <Col md={10}>
-              <Table hidden={!this.state.req} style={{ textAlign: "left" }}>
-                <thead >
-                  <tr>
-                    <th style={{ borderTop: "0px", borderBottom: "2px" }}>
-                      <CopyButton handler={this.handleCopy} /> cURL Command
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="code">{this.curlBuilder()}</td>
-                  </tr>
-                </tbody>
-              </Table>
-            </Col>
-          </Row>
+          <Panel
+            route={this.state.route}
+            req={this.state.req}
+            text={this.state.text}
+            response={this.state.response}
+            api={"Senti"}
+            curl={this.curlBuilder()}
+            copyHandler={this.copyHandler}
+          />
         </Container>
       </div>
     );
