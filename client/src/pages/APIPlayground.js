@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
+import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -45,7 +44,7 @@ class APIPlayground extends Component {
 
     this.handleCopy = this.handleCopy.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleAnalysis = this.handleAnalysis.bind(this);
+    this.handleAPICall = this.handleAPICall.bind(this);
     this.handleAWSComprehension = this.handleAWSComprehension.bind(this);
   }
 
@@ -76,9 +75,7 @@ class APIPlayground extends Component {
   };
 
   requestBuilder = (api) => {
-    return (
-      api + this.queryBuilder({ text: this.state.text })
-    );
+    return api + this.queryBuilder({ text: this.state.text });
   };
 
   handleCopy = () => {
@@ -94,10 +91,7 @@ class APIPlayground extends Component {
     this.setState({ text: event.target.value, req: false });
   };
 
-  handleAnalysis = (api) => {
-    let params = {
-      text: this.state.text,
-    };
+  handleAPICall = (api) => {
     this.setState({ req: false });
     let url = this.requestBuilder(api);
 
@@ -149,17 +143,15 @@ class APIPlayground extends Component {
                   placeholder="Text to classify"
                   onChange={this.handleChange}
                 />
-                <DropdownButton
-                  as={InputGroup.Append}
-                  variant="outline-secondary"
-                  title="Analyse"
-                  id="input-group-dropdown-2"
-                  disabled={this.state.text === ""}
-                >
-                  <Dropdown.Item onClick={() => this.handleAWSComprehension()}>
-                    AWS Comprehend
-                  </Dropdown.Item>
-                </DropdownButton>
+                <InputGroup.Append>
+                  <Button
+                    variant="outline-secondary"
+                    disabled={this.state.text === ""}
+                    onClick={() => this.handleAWSComprehension()}
+                  >
+                    Analyse
+                  </Button>
+                </InputGroup.Append>
               </InputGroup>
             </Col>
           </Row>
@@ -173,9 +165,7 @@ class APIPlayground extends Component {
               method={"AWS Comprehend"}
               copyHandler={this.copyHandler}
             />
-          ) : (
-            null
-          )}
+          ) : null}
         </Container>
       </div>
     );
