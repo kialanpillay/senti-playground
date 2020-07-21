@@ -1,17 +1,24 @@
 {
-	"auth": {
-		"senti5bd15d12": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [],
-			"customAuth": false
-		}
-	},
-	"predictions": {
-		"interpretText8f4b3a8b": {
-			"providerPlugin": "awscloudformation",
-			"service": "Comprehend",
-			"interpretType": "interpretText"
-		}
-	}
+    "auth": {
+        "senti5bd15d12": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [],
+            "customAuth": false
+        }
+    },
+    "predictions": {
+        "interpretText8f4b3a8b": {
+            "providerPlugin": "awscloudformation",
+            "service": "Comprehend",
+            "interpretType": "interpretText"
+        }
+    },
+    "hosting": {
+        "amplifyhosting": {
+            "service": "amplifyhosting",
+            "providerPlugin": "awscloudformation",
+            "type": "manual"
+        }
+    }
 }

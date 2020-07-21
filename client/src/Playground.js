@@ -19,6 +19,7 @@ import { AmplifySignOut } from "@aws-amplify/ui-react";
 import awsconfig from "./aws-exports";
 
 import copy from "copy-to-clipboard";
+import Speech from "react-speech";
 
 Amplify.configure(awsconfig);
 
@@ -78,14 +79,14 @@ class Playground extends Component {
   };
 
   handleChange = (event) => {
-    this.setState({ text: event.target.value });
+    this.setState({ text: event.target.value, req: false });
   };
 
   handleAnalysis = (route) => {
     let params = {
       text: this.state.text,
     };
-    this.setState({ route: route });
+    this.setState({ route: route, req: false });
     let query = this.queryBuilder(params);
 
     let url = api + route + query;
@@ -169,25 +170,13 @@ class Playground extends Component {
                   id="input-group-dropdown-2"
                 >
                   <Dropdown.Item onClick={() => this.handleAnalysis("bayes/")}>
-                    Naive Bayes
+                    Senti Naive Bayes
                   </Dropdown.Item>
                   <Dropdown.Item onClick={() => this.handleAnalysis("vader/")}>
-                    VADER
+                    Senti VADER
                   </Dropdown.Item>
                 </DropdownButton>
               </InputGroup>
-            </Col>
-          </Row>
-          <Row style={{ marginTop: "2rem" }}>
-            <Col md={10}>
-              <h4 className="text" hidden={!this.state.req}>
-                {this.state.route === "bayes/"
-                  ? "Naive Bayes indicates that your text is " +
-                    this.state.response.compound
-                  : this.state.response.compound > 0.05
-                  ? "VADER indicates that your text is positive"
-                  : "VADER indicates that your text is negative"}
-              </h4>
             </Col>
           </Row>
           <Row style={{ marginTop: "2rem" }}>
@@ -217,10 +206,32 @@ class Playground extends Component {
                     <td>
                       {this.state.route === "bayes/" ? "Naive Bayes" : "VADER"}
                     </td>
-                    <td>{this.state.response.compound}</td>
+                    <td>{this.state.response.classification}</td>
                   </tr>
                 </tbody>
               </Table>
+            </Col>
+          </Row>
+          <Row style={{ marginTop: "0rem" }}>
+            <Col md="auto">
+              {this.state.req ? (
+                <h4 className="text" hidden={!this.state.req}>
+                  {this.state.route === "bayes/"
+                    ? `Naive Bayes indicates that your text is
+                      ${this.state.response.classification}.`
+                    : `VADER indicates that your text is
+                    ${this.state.response.classification}.`}
+                </h4>
+              ) : null}
+            </Col>
+            <Col md="auto">
+              {this.state.req ? (
+                <Speech
+                  textAsButton={true}
+                  displayText="Listen"
+                  text={`The sentence, ${this.state.text}, is ${this.state.response.classification}.`}
+                />
+              ) : null}
             </Col>
           </Row>
         </Container>
