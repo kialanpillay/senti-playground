@@ -3,9 +3,13 @@ import Card from "react-bootstrap/Card";
 
 import Speech from "react-speech";
 
+String.prototype.toSentenceCase = function () {
+  return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+};
+
 export default function ResultCard(props) {
   return (
-    <Card hidden={!props.req} style={{ textAlign: "left" }}>
+    <Card hidden={!props.req} style={{ textAlign: "left", width: "22rem" }}>
       <Card.Body>
         <Card.Title>Sentiment Analysis by {props.api}</Card.Title>
         <Card.Subtitle
@@ -22,7 +26,7 @@ export default function ResultCard(props) {
           </a>
         </Card.Subtitle>
 
-        <h5>{props.req ? props.data.classification : null}</h5>
+        <h5>{props.req ? props.data.classification.toSentenceCase() : null}</h5>
         <Speech
           textAsButton={true}
           displayText="Listen"
