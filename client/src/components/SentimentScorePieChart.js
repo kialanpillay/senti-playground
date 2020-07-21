@@ -9,11 +9,11 @@ export default function SentimentScorePieChart(props) {
     data = [
       {
         name: "Positive",
-        value: props.data.classification === "Positive" ? 1 : 0,
+        value: props.data.classification === "Positive" ? 100 : 0,
       },
       {
         name: "Negative",
-        value: props.data.classification === "Positive" ? 0 : 1,
+        value: props.data.classification === "Positive" ? 0 : 100,
       },
       {
         name: "Neutral",
@@ -24,21 +24,21 @@ export default function SentimentScorePieChart(props) {
     data = [
       {
         name: "Positive",
-        value: props.data.pos,
+        value: props.data.pos * 100,
       },
       {
         name: "Negative",
-        value: props.data.neg,
+        value: props.data.neg * 100,
       },
       {
         name: "Neutral",
-        value: props.data.neu,
+        value: props.data.neu * 100,
       },
     ];
   }
 
   return (
-    <PieChart width={300} height={200}>
+    <PieChart width={300} height={160}>
       <Tooltip />
       <Pie
         data={data}

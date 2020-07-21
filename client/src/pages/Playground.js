@@ -170,6 +170,7 @@ class Playground extends Component {
                   variant="outline-secondary"
                   title="Analyse"
                   id="input-group-dropdown-2"
+                  disabled={this.state.text === ""}
                 >
                   <Dropdown.Item onClick={() => this.handleAnalysis("bayes/")}>
                     Senti Naive Bayes
@@ -218,9 +219,9 @@ class Playground extends Component {
           <Row style={{ marginTop: "0rem" }}>
             <Col md={6}>
               <Table hidden={!this.state.req} style={{ textAlign: "left" }}>
-                <thead>
+                <thead >
                   <tr>
-                    <th>
+                    <th style={{ borderTop: "0px", borderBottom: "2px" }}>
                       <CopyButton handler={this.handleCopy} /> cURL Command
                     </th>
                   </tr>
