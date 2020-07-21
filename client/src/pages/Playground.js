@@ -189,8 +189,8 @@ class Playground extends Component {
                   <Card.Title>Sentiment Analysis by Senti</Card.Title>
                   <Card.Subtitle className="mb-2 text-muted">
                     {this.state.route === "bayes/"
-                      ? "Naive Bayes Method"
-                      : "VADER Method"}{" "}
+                      ? "Naive Bayes Method - "
+                      : "VADER Method - "}{" "}
                     <a href="/" target="_blank" className="link">
                       Learn More
                     </a>
@@ -217,7 +217,7 @@ class Playground extends Component {
             </Col>
           </Row>
           <Row style={{ marginTop: "0rem" }}>
-            <Col md={6}>
+            <Col md={10}>
               <Table hidden={!this.state.req} style={{ textAlign: "left" }}>
                 <thead >
                   <tr>

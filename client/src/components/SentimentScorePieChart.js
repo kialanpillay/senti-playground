@@ -24,15 +24,15 @@ export default function SentimentScorePieChart(props) {
     data = [
       {
         name: "Positive",
-        value: props.data.pos * 100,
+        value: Math.round(props.data.pos * 100,2),
       },
       {
         name: "Negative",
-        value: props.data.neg * 100,
+        value: Math.round(props.data.neg * 100,2),
       },
       {
         name: "Neutral",
-        value: props.data.neu * 100,
+        value: Math.round(props.data.neu * 100,2),
       },
     ];
   }
@@ -49,6 +49,7 @@ export default function SentimentScorePieChart(props) {
         outerRadius={100}
         startAngle={180}
         endAngle={0}
+        animationDuration={1000}
         fill="#8884d8"
         dataKey="value"
       >
