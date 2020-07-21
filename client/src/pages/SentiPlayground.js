@@ -37,7 +37,6 @@ class SentiPlayground extends Component {
       auth: false,
       text: "",
       response: "",
-      score: [],
       req: false,
       route: "",
       api: "Senti"
@@ -84,9 +83,7 @@ class SentiPlayground extends Component {
       text: this.state.text,
     };
     this.setState({ route: route, req: false });
-    let query = this.queryBuilder(params);
-
-    let url = api + route + query;
+    let url = this.requestBuilder();
 
     fetch(url, {
       method: "GET",

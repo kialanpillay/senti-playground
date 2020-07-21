@@ -1,63 +1,62 @@
 import React from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
 
 import CopyButton from "./CopyButton";
 import SentimentScorePieChart from "./SentimentScorePieChart";
-
-import Speech from "react-speech";
+import ResultCard from "./ResultCard";
 
 export default function Panel(props) {
+  let data;
+  if (props.api === "AWS") {
+    data = {
+      classification: props.response.predominant,
+      pos: props.response.positive,
+      neg: props.response.negative,
+      neu: props.response.neutral,
+    };
+  } else {
+    data = props.response;
+  }
+  let link;
+  let method;
+  if (props.hasOwnProperty("route")) {
+    link =
+      props.route === "bayes/"
+        ? "https://en.wikipedia.org/wiki/Naive_Bayes_classifier"
+        : "https://github.com/cjhutto/vaderSentiment";
+    method = props.route === "bayes/" ? "Naive Bayes" : "VADER";
+  } else {
+    link = props.link;
+    method = props.method;
+  }
+
   return (
     <div>
       <Row style={{ marginTop: "2rem" }}>
         <Col md={6}>
-          <Card hidden={!props.req} style={{ textAlign: "left" }}>
-            <Card.Body>
-              <Card.Title>Sentiment Analysis by {props.api}</Card.Title>
-              <Card.Subtitle className="mb-2 text-muted" hidden={props.api !== "Senti"}>
-                {props.route === "bayes/"
-                  ? "Naive Bayes Method - "
-                  : "VADER Method - "}{" "}
-                <a
-                  href={
-                    props.route === "bayes/"
-                      ? "https://en.wikipedia.org/wiki/Naive_Bayes_classifier"
-                      : "https://github.com/cjhutto/vaderSentiment"
-                  }
-                  target="_blank"
-                  className="link"
-                  rel="noopener noreferrer"
-                >
-                  Learn More
-                </a>
-              </Card.Subtitle>
-
-              <h5>
-                {props.req ? props.response.classification : null}
-              </h5>
-              <Speech
-                textAsButton={true}
-                displayText="Listen"
-                text={`The sentence, ${props.text}, is ${props.response.classification}.`}
-              />
-            </Card.Body>
-          </Card>
+          <ResultCard
+            req={props.req}
+            method={method}
+            api={props.api}
+            text={props.text}
+            data={data}
+            link={link}
+          />
         </Col>
         <Col>
-          {props.req ? (
-            <SentimentScorePieChart
-              data={props.response}
-              route={props.route}
-            />
+          {props.req && props.api == "Senti" ? (
+            <SentimentScorePieChart data={data} route={props.route} />
           ) : null}
         </Col>
       </Row>
       <Row style={{ marginTop: "0rem" }}>
         <Col md={10}>
-          <Table hidden={!(props.req && props.api !== "AWS")} style={{ textAlign: "left" }}>
+          <Table
+            hidden={!(props.req && props.hasOwnProperty("curl"))}
+            style={{ textAlign: "left" }}
+          >
             <thead>
               <tr>
                 <th style={{ borderTop: "0px", borderBottom: "2px" }}>
