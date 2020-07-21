@@ -35,7 +35,7 @@ export default function Panel(props) {
   return (
     <div>
       <Row style={{ marginTop: "2rem" }}>
-        <Col md={6}>
+        <Col md={4}>
           <ResultCard
             req={props.req}
             method={method}
@@ -46,7 +46,7 @@ export default function Panel(props) {
           />
         </Col>
         <Col>
-          {props.req && props.api == "Senti" ? (
+          {props.req && props.api === "Senti" ? (
             <SentimentScorePieChart data={data} route={props.route} />
           ) : null}
         </Col>
