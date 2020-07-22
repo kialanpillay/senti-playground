@@ -9,7 +9,6 @@ String.prototype.toSentenceCase = function () {
 };
 
 export default function AnalysisCard(props) {
-  console.log(props)
   return (
     <Card hidden={!props.req} style={{ textAlign: "left"}}>
       <Card.Body>

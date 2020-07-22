@@ -55,6 +55,7 @@ class Engine extends Component {
 
   processResponse = (api) => {
     let data;
+    console.log(this.state.response);
     if (api === "AWS") {
       data = {
         classification: this.state.prediction.predominant,
@@ -92,7 +93,7 @@ class Engine extends Component {
   };
 
   handleChange = (event) => {
-    this.setState({ text: event.target.value, req: false });
+    this.setState({ text: event.target.value });
   };
 
   handleCall = () => {
@@ -101,14 +102,13 @@ class Engine extends Component {
   };
 
   handleAnalysis = () => {
-    this.setState({ req: false });
     let url = "https://text-sentiment.p.rapidapi.com/analyze";
-
     fetch(url, {
       method: "POST",
       headers: {
         "x-rapidapi-host": "text-sentiment.p.rapidapi.com",
         "x-rapidapi-key": "646e81359bmsh810817ffde70fc2p16998cjsn345cdec67f45",
+        "content-type": "application/x-www-form-urlencoded",
       },
       body: {
         text: this.state.text,
@@ -204,7 +204,7 @@ class Engine extends Component {
                   req={true}
                   text={this.state.text}
                   data={this.processResponse("fyhao")}
-                  api={"fyhao c/o RapidAPI"}
+                  api={"RapidAPI (fyhao)"}
                   method={"Text Sentiment Analysis"}
                 />
               ) : null}
