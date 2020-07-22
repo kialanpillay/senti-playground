@@ -21,11 +21,13 @@
 }
 
 .brand{
+  margin-top: 0.5rem;
   letter-spacing: 1rem;
 }
 
 .username {
   text-align: right;
+  margin-top: 0.5rem;
   margin-right: 1rem;
   color: white
 }

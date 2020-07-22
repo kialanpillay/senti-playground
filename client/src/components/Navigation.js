@@ -19,10 +19,10 @@ export default function Navigation(props) {
       </Nav>
       <Navbar.Collapse className="justify-content-end" >
         <Navbar.Text hidden={!props.auth}>
-          <h5 className="username">Signed in as {props.auth ? props.username : null}</h5>
+          <h6 className="username">Welcome, {props.auth ? props.username : null}</h6>
         </Navbar.Text>
 
-        {props.auth ? null : null}
+        {props.auth ? <AmplifySignOut onClick/> : null}
       </Navbar.Collapse>
     </Navbar>
   );
