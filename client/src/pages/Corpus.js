@@ -2,11 +2,13 @@ import React, { Component } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
+import ProgressBar from "react-bootstrap/ProgressBar";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import Amplify, { Auth, Hub } from "aws-amplify";
@@ -30,10 +32,11 @@ Hub.listen("auth", listener);
 const api = "https://senti-ment-api.herokuapp.com/";
 
 const options = {
-  colors: ["silver", "black", "gray"],
+  colors: ["silver", "black", "#282c34", "orange"],
   deterministic: true,
+  enableTooltip: false,
   fontFamily: "Arial",
-  fontSizes: [60, 60],
+  fontSizes: [50, 50],
   padding: 1,
   rotations: 2,
   rotationAngles: [0, 90],
@@ -101,7 +104,7 @@ class Corpus extends Component {
           <Row style={{ marginTop: "0rem" }}>
             <Col md="auto">
               <h2 className="text">
-                Help build Senti by contributing to our Gen Z lexicon.
+                Help improve Senti API by contributing to our Gen Z lexicon.
               </h2>
             </Col>
           </Row>
@@ -140,10 +143,16 @@ class Corpus extends Component {
                   </Button>
                 </InputGroup.Append>
               </InputGroup>
+              <OverlayTrigger
+                placement={"top"}
+                overlay={<Tooltip>Help us fill this bar!</Tooltip>}
+              >
+                <ProgressBar variant="dark" now={1} />
+              </OverlayTrigger>
             </Col>
           </Row>
-          <Row>
-            <Col md={10}>
+          <Row style={{ marginTop: "1rem" }}>
+            <Col md={8}>
               <ReactWordcloud options={options} words={words} />
             </Col>
           </Row>
