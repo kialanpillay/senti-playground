@@ -46,11 +46,13 @@ class Newsreel extends Component {
 
   async componentDidMount() {
     let user = await Auth.currentAuthenticatedUser();
-    const res = await fetch(`https://ipapi.co/json/`);
-    const ip = await res.json();
     this.setState({
       username: user.username,
       auth: true,
+    });
+    const res = await fetch(`https://ipapi.co/json/`);
+    const ip = await res.json();
+    this.setState({
       country: ip.country_name,
     });
     this.getNews(ip.country_code.toLowerCase());
@@ -145,7 +147,8 @@ class Newsreel extends Component {
           <Row style={{ marginTop: "0rem" }}>
             <Col md="auto">
               <h2 className="text">
-                Senti explores the top headlines from {this.state.country} using bulk analysis.
+                Senti explores the top headlines from {this.state.country} using
+                bulk analysis.
               </h2>
             </Col>
           </Row>
