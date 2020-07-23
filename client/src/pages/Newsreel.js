@@ -15,6 +15,7 @@ import awsconfig from "../aws-exports";
 import Navigation from "../components/Navigation";
 import NewsPieChart from "../components/NewsPieChart";
 import NewsBarChart from "../components/NewsBarChart";
+import articles from "../assets/articles";
 
 Amplify.configure(awsconfig);
 
@@ -55,7 +56,8 @@ class Newsreel extends Component {
     this.setState({
       country: ip.country_name,
     });
-    this.getNews(ip.country_code.toLowerCase());
+    //this.getNews(ip.country_code.toLowerCase());
+    this.getSampleNews();
   }
 
   processResponse = () => {
@@ -80,6 +82,13 @@ class Newsreel extends Component {
       };
     });
     return { documents };
+  };
+
+  getSampleNews = () => {
+    this.setState({
+      articles: articles,
+    });
+    this.bulkSentimentAnalysis();
   };
 
   getNews = (code) => {
@@ -175,7 +184,7 @@ class Newsreel extends Component {
                           rel="noopener noreferrer"
                           style={{ color: "black" }}
                         >
-                          {article.title.substring(0, 60)}...
+                          {article.title.length < 60 ? article.title : article.title.substring(0, 60)+ "..."}
                         </a>
                       </ListGroup.Item>
                     );
