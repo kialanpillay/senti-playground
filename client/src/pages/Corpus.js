@@ -34,7 +34,7 @@ const api = "https://senti-ment-api.herokuapp.com/";
 
 const cloud_options = {
   colors: ["silver", "black", "#282c34", "orange"],
-  deterministic: true,
+  deterministic: false,
   enableTooltip: false,
   fontFamily: "monospace",
   fontSizes: [50, 50],
