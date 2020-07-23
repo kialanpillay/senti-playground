@@ -4,6 +4,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import Spinner from "react-bootstrap/Spinner";
 import Icon from "@material-ui/core/Icon";
 import "bootstrap/dist/css/bootstrap.min.css";
 import masks from "../assets/masks.png";
@@ -85,11 +86,11 @@ class Home extends Component {
                     </Icon>
                   </Card.Title>
                   <Card.Subtitle className="mb-2 text-muted">
-                    MiniView -  {new Date().toDateString()}
+                    MiniView - {new Date().toDateString()}
                   </Card.Subtitle>
                   {this.state.weather !== null ? (
                     <Row style={{ marginTop: "1rem" }}>
-                       <Col md="auto">
+                      <Col md="auto">
                         <Icon
                           style={{
                             fontSize: 50,
@@ -98,7 +99,6 @@ class Home extends Component {
                         >
                           my_location
                         </Icon>
-          
                       </Col>
                       <Col md="auto">
                         Location
@@ -121,7 +121,6 @@ class Home extends Component {
                         >
                           masks
                         </Icon>
-          
                       </Col>
                       <Col md="auto">
                         Confirmed
@@ -156,7 +155,10 @@ class Home extends Component {
                     </Row>
                   ) : (
                     <Row style={{ marginTop: "1rem" }}>
-                      <Col md="auto">Loading Widget</Col>
+                      <Col md="auto">
+                        <Spinner animation="grow" size="sm" />
+                      </Col>
+                      <Col>Loading Widget</Col>
                     </Row>
                   )}
                 </Card.Body>
