@@ -133,7 +133,7 @@ class Corpus extends Component {
           <Row style={{ marginTop: "0rem" }}>
             <Col md="auto">
               <h2 className="text">
-                Help improve Senti API by contributing to our Gen Z lexicon.
+                Help improve Senti classifiers by contributing to our Gen Z lexicon.
               </h2>
             </Col>
           </Row>
@@ -154,7 +154,7 @@ class Corpus extends Component {
                 </ListGroup.Item>
               </ListGroup>
             </Col>
-            <Col md={6}>
+            <Col md={8}>
               <InputGroup className="mb-3" size="lg">
                 <FormControl
                   placeholder="Your phrase here"
