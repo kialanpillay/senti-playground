@@ -29,6 +29,8 @@ class Newsreel extends Component {
       username: "",
       auth: false,
       country: "",
+      articles: [],
+      classification: [],
     };
   }
 
@@ -41,21 +43,49 @@ class Newsreel extends Component {
       auth: true,
       country: ip.country_name,
     });
-    this.getNews();
+    this.getNews(ip.country_code.toLowerCase());
   }
 
-  getNews = () => {
-    let url = `${api}corpus`;
+  processArticles = () => {
+    const titles = this.state.articles.map((article) => {
+      return {
+        text: article.title,
+      };
+    });
+    return titles;
+  };
+
+  getNews = (code) => {
+    fetch(
+      `https://newsapi.org/v2/top-headlines?country=${code}&apiKey=e3c7d810af0e41dd869013ab5c5d66e9`
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        this.setState({
+          articles: result.articles,
+        });
+      })
+      .then(() => this.processArticles())
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  bulkSentimentAnalysis = () => {
+    const url = `${api}bulk`;
+    const payload = this.processArticles();
     fetch(url, {
       method: "GET",
       headers: {
-        "content-type": "application/json",
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
+      body: JSON.stringify(payload),
     })
       .then((response) => response.json())
       .then((result) => {
         this.setState({
-          count: result.count,
+          classification: result.classification,
         });
       })
       .catch(function (error) {
@@ -77,7 +107,9 @@ class Newsreel extends Component {
           </Row>
           <Row style={{ marginTop: "0rem" }}>
             <Col md="auto">
-              <h2 className="text" hidden={this.state.country === ""}>Senti analyses the latest headlines from {this.state.country}</h2>
+              <h2 className="text" hidden={this.state.country === ""}>
+                Senti explores the latest headlines from {this.state.country}
+              </h2>
             </Col>
           </Row>
         </Container>
