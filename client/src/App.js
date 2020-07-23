@@ -7,6 +7,7 @@ import Playground from "./pages/Playground";
 import Engine from "./pages/Engine";
 import Home from "./pages/Home";
 import Corpus from "./pages/Corpus";
+import Newsreel from "./pages/Newsreel";
 
 import Amplify from "aws-amplify";
 import awsconfig from "./aws-exports";
@@ -30,6 +31,9 @@ function App() {
           </Route>
           <Route exact path="/corpus">
             <Corpus />
+          </Route>
+          <Route exact path="/newsreel">
+            <Newsreel />
           </Route>
         </Switch>
       </Router>
