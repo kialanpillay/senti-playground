@@ -39,7 +39,7 @@ class Playground extends Component {
       response: "",
       req: false,
       route: "",
-      api: "Senti"
+      api: "Senti",
     };
 
     this.handleCopy = this.handleCopy.bind(this);
@@ -60,9 +60,7 @@ class Playground extends Component {
   };
 
   requestBuilder = (route) => {
-    return (
-      api + route + this.queryBuilder({ text: this.state.text })
-    );
+    return api + route + this.queryBuilder({ text: this.state.text });
   };
 
   handleCopy = () => {

@@ -22,7 +22,7 @@ export default function Navigation(props) {
           <h6 className="username">Welcome, {props.auth ? props.username : null}</h6>
         </Navbar.Text>
 
-        {props.auth ? <AmplifySignOut onClick/> : null}
+        {props.auth ? <AmplifySignOut/> : null}
       </Navbar.Collapse>
     </Navbar>
   );
