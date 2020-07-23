@@ -5,7 +5,6 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
-import Table from "react-bootstrap/FormControl";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import rapid from "../assets/rapid.png";

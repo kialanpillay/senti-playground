@@ -26,7 +26,6 @@ class Home extends Component {
   async componentDidMount() {
     let res = await fetch(`https://ipapi.co/json/`);
     const ip = await res.json();
-    console.log(ip);
     res = await fetch(
       `http://api.openweathermap.org/data/2.5/weather?lat=${ip.latitude}&lon=${ip.longitude}&appid=8941e9cb367f4bb6e1a7311f3ed46c88&units=metric`,
       {
@@ -37,7 +36,6 @@ class Home extends Component {
 
     res = await fetch("https://pomber.github.io/covid19/timeseries.json");
     const data = await res.json();
-    console.log(weather);
     this.setState({ weather: weather, data: data, ip: ip });
   }
 

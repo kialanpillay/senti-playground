@@ -185,7 +185,7 @@ class Corpus extends Component {
               </OverlayTrigger>
             </Col>
             <Col>
-              <Toast show={!this.state.show} onClose={() => this.setShow()}>
+              <Toast show={this.state.show} onClose={() => this.setShow()}>
                 <Toast.Header>
                   <strong className="mr-auto">The Corpus Project</strong>
                   <small>Now</small>
