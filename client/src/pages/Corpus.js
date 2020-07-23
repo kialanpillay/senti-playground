@@ -31,7 +31,7 @@ const listener = (data) => {
 Hub.listen("auth", listener);
 const api = "https://senti-ment-api.herokuapp.com/";
 
-const options = {
+const cloud_options = {
   colors: ["silver", "black", "#282c34", "orange"],
   deterministic: true,
   enableTooltip: false,
@@ -53,6 +53,7 @@ class Corpus extends Component {
       auth: false,
       phrase: "",
       sentiment: "",
+      count: 0
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -87,7 +88,27 @@ class Corpus extends Component {
   async componentDidMount() {
     let user = await Auth.currentAuthenticatedUser();
     this.setState({ username: user.username, auth: true });
+    this.getItemCount()
   }
+
+  getItemCount = () => {
+    let url = `${api}corpus`;
+    fetch(url, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        this.setState({
+          count: result.count,
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   render() {
     return (
@@ -145,15 +166,19 @@ class Corpus extends Component {
               </InputGroup>
               <OverlayTrigger
                 placement={"top"}
-                overlay={<Tooltip>Help us fill this bar!</Tooltip>}
+                overlay={
+                  <Tooltip>
+                    Help Senti to fill this bar! (Count updated daily)
+                  </Tooltip>
+                }
               >
-                <ProgressBar variant="dark" now={1} />
+                <ProgressBar variant="dark" now={this.state.count} />
               </OverlayTrigger>
             </Col>
           </Row>
           <Row style={{ marginTop: "1rem" }}>
             <Col md={8}>
-              <ReactWordcloud options={options} words={words} />
+              <ReactWordcloud options={cloud_options} words={words} />
             </Col>
           </Row>
         </Container>
