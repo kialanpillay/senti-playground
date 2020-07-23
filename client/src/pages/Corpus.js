@@ -36,7 +36,7 @@ const cloud_options = {
   colors: ["silver", "black", "#282c34", "orange"],
   deterministic: true,
   enableTooltip: false,
-  fontFamily: "Arial",
+  fontFamily: "monospace",
   fontSizes: [50, 50],
   padding: 1,
   rotations: 2,
@@ -133,7 +133,7 @@ class Corpus extends Component {
           <Row style={{ marginTop: "0rem" }}>
             <Col md="auto">
               <h2 className="text">
-                Help improve Senti classifiers by contributing to our Gen Z lexicon.
+                Help improve our classifiers by contributing to our Gen Z lexicon.
               </h2>
             </Col>
           </Row>
