@@ -10,7 +10,7 @@ import Corpus from "./pages/Corpus";
 import Newsreel from "./pages/Newsreel";
 
 import Amplify from "aws-amplify";
-import awsconfig from "./aws-exports";
+import awsconfig from "./config";
 
 Amplify.configure(awsconfig);
 
