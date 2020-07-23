@@ -31,6 +31,9 @@ class Newsreel extends Component {
       country: "",
       articles: [],
       classification: [],
+      positiveArticles: 0,
+      negativeArticles: 0,
+      neutralArticles: 0,
     };
   }
 
@@ -46,13 +49,27 @@ class Newsreel extends Component {
     this.getNews(ip.country_code.toLowerCase());
   }
 
+  processResponse = () => {
+    this.state.classification.forEach(item => {
+        if(item.classification === "Positive"){
+            this.setState({positiveArticles: this.state.positiveArticles + 1})
+        }
+        else if(item.classification === "Negative"){
+            this.setState({negativeArticles: this.state.negativeArticles + 1})
+        }
+        else{
+            this.setState({neutralArticles: this.state.neutralArticles + 1})
+        }
+    });
+  };
+
   processArticles = () => {
-    const titles = this.state.articles.map((article) => {
+    const documents = this.state.articles.map((article) => {
       return {
         text: article.title,
       };
     });
-    return titles;
+    return {documents};
   };
 
   getNews = (code) => {
@@ -65,7 +82,7 @@ class Newsreel extends Component {
           articles: result.articles,
         });
       })
-      .then(() => this.processArticles())
+      .then(() => this.bulkSentimentAnalysis())
       .catch(function (error) {
         console.log(error);
       });
@@ -75,7 +92,7 @@ class Newsreel extends Component {
     const url = `${api}bulk`;
     const payload = this.processArticles();
     fetch(url, {
-      method: "GET",
+      method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -85,9 +102,10 @@ class Newsreel extends Component {
       .then((response) => response.json())
       .then((result) => {
         this.setState({
-          classification: result.classification,
+          classification: result.bulkClassification,
         });
       })
+      .then(() => this.processResponse())
       .catch(function (error) {
         console.log(error);
       });
