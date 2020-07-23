@@ -27,7 +27,7 @@ class Home extends Component {
     let res = await fetch(`https://ipapi.co/json/`);
     const ip = await res.json();
     res = await fetch(
-      `http://api.openweathermap.org/data/2.5/weather?lat=${ip.latitude}&lon=${ip.longitude}&appid=8941e9cb367f4bb6e1a7311f3ed46c88&units=metric`,
+      `https://api.openweathermap.org/data/2.5/weather?lat=${ip.latitude}&lon=${ip.longitude}&appid=8941e9cb367f4bb6e1a7311f3ed46c88&units=metric`,
       {
         method: "GET",
       }
