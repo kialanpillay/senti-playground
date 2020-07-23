@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Card from "react-bootstrap/Card";
+import ListGroup from "react-bootstrap/ListGroup";
+import Spinner from "react-bootstrap/Spinner";
+import Icon from "@material-ui/core/Icon";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import Amplify, { Auth, Hub } from "aws-amplify";
@@ -34,6 +38,7 @@ class Newsreel extends Component {
       positiveArticles: 0,
       negativeArticles: 0,
       neutralArticles: 0,
+      req: false,
     };
   }
 
@@ -50,16 +55,17 @@ class Newsreel extends Component {
   }
 
   processResponse = () => {
-    this.state.classification.forEach(item => {
-        if(item.classification === "Positive"){
-            this.setState({positiveArticles: this.state.positiveArticles + 1})
-        }
-        else if(item.classification === "Negative"){
-            this.setState({negativeArticles: this.state.negativeArticles + 1})
-        }
-        else{
-            this.setState({neutralArticles: this.state.neutralArticles + 1})
-        }
+    this.state.classification.forEach((item) => {
+      if (item.classification === "Positive") {
+        this.setState({ positiveArticles: this.state.positiveArticles + 1 });
+      } else if (item.classification === "Negative") {
+        this.setState({ negativeArticles: this.state.negativeArticles + 1 });
+      } else {
+        this.setState({ neutralArticles: this.state.neutralArticles + 1 });
+      }
+    });
+    this.setState({
+      req: true,
     });
   };
 
@@ -69,7 +75,7 @@ class Newsreel extends Component {
         text: article.title,
       };
     });
-    return {documents};
+    return { documents };
   };
 
   getNews = (code) => {
@@ -115,19 +121,86 @@ class Newsreel extends Component {
     return (
       <div className="App">
         <Navigation username={this.state.username} auth={this.state.auth} />
-        <Container style={{ marginTop: "4rem" }}>
+        <Container
+          style={{ marginTop: "4rem" }}
+          hidden={this.state.country === ""}
+        >
           <Row>
             <Col md={10}>
               <h1 className="heading" onClick={() => this.handleSubmit()}>
                 Newsreel
+                <Icon
+                  style={{
+                    fontSize: 64,
+                    color: "orange",
+                  }}
+                >
+                  library_books
+                </Icon>
               </h1>
             </Col>
           </Row>
           <Row style={{ marginTop: "0rem" }}>
             <Col md="auto">
-              <h2 className="text" hidden={this.state.country === ""}>
-                Senti explores the latest headlines from {this.state.country}
+              <h2 className="text">
+                Senti explores the top 20 headlines from {this.state.country}.
               </h2>
+            </Col>
+          </Row>
+          <Row style={{ marginTop: "4rem" }} hidden={this.state.req}>
+            <Col md="auto">
+              <Spinner animation="grow" />
+            </Col>
+            <Col md="auto">
+              <h3 className="text">Analysing Headlines</h3>
+            </Col>
+          </Row>
+          <Row style={{ marginTop: "2rem" }} hidden={!this.state.req}>
+            <Col md="auto">
+              <Card>
+                <Card.Body>
+                  <h1 className="digit">{this.state.positiveArticles}</h1>
+                  <h4 className="text"> Positive</h4>
+                  <h1 className="digit">{this.state.negativeArticles}</h1>
+                  <h4 className="text"> Negative</h4>
+                  <h1 className="digit">{this.state.neutralArticles}</h1>
+                  <h4 className="text"> Neutral</h4>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={6}>
+              <Card style={{ textAlign: "left" }}>
+                <Card.Header>Selection of Headlines</Card.Header>
+                <ListGroup variant="flush">
+                  {this.state.articles.slice(0, 6).map((article, index) => {
+                    return (
+                      <ListGroup.Item>
+                        <a
+                          key={index}
+                          href={article.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{ color: "black" }}
+                        >
+                          {article.title.substring(0, 60)}...
+                        </a>
+                      </ListGroup.Item>
+                    );
+                  })}
+                </ListGroup>
+              </Card>
+            </Col>
+            <Col md="auto">
+              <Card style={{ textAlign: "left" }}>
+                <Card.Header>Sentiment</Card.Header>
+                <ListGroup variant="flush">
+                  {this.state.classification.slice(0, 6).map((item) => {
+                    return (
+                      <ListGroup.Item>{item.classification}</ListGroup.Item>
+                    );
+                  })}
+                </ListGroup>
+              </Card>
             </Col>
           </Row>
         </Container>

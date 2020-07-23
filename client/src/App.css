@@ -20,6 +20,12 @@
   text-align: left;
 }
 
+.digit {
+  text-align: left;
+  font-size: 4rem;
+  color: orange;
+}
+
 .brand{
   margin-top: 0.5rem;
   letter-spacing: 1rem;
