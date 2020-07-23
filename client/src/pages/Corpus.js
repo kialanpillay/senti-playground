@@ -9,6 +9,7 @@ import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import Toast from "react-bootstrap/Toast";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import Amplify, { Auth, Hub } from "aws-amplify";
@@ -53,20 +54,26 @@ class Corpus extends Component {
       auth: false,
       phrase: "",
       sentiment: "",
-      count: 0
+      count: 0,
+      show: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.setSentiment = this.setSentiment.bind(this);
+    this.setShow = this.setShow.bind(this);
   }
+
+  setShow = () => {
+    this.setState({ show: !this.state.show });
+  };
 
   setSentiment = (value) => {
     this.setState({ sentiment: value });
   };
 
   handleChange = (event) => {
-    this.setState({ phrase: event.target.value });
+    this.setState({ phrase: event.target.value, show: false });
   };
 
   handleSubmit = () => {
@@ -75,6 +82,7 @@ class Corpus extends Component {
       phrase: this.state.phrase,
       sentiment: this.state.sentiment,
     };
+    this.setState({ phrase: "", show: true });
     let url = `${api}corpus`;
     fetch(url, {
       method: "PUT",
@@ -88,7 +96,7 @@ class Corpus extends Component {
   async componentDidMount() {
     let user = await Auth.currentAuthenticatedUser();
     this.setState({ username: user.username, auth: true });
-    this.getItemCount()
+    this.getItemCount();
   }
 
   getItemCount = () => {
@@ -151,6 +159,7 @@ class Corpus extends Component {
                 <FormControl
                   placeholder="Your phrase here"
                   onChange={this.handleChange}
+                  value={this.state.phrase}
                 />
                 <InputGroup.Append>
                   <Button
@@ -174,6 +183,15 @@ class Corpus extends Component {
               >
                 <ProgressBar variant="dark" now={this.state.count} />
               </OverlayTrigger>
+            </Col>
+            <Col>
+              <Toast show={!this.state.show} onClose={() => this.setShow()}>
+                <Toast.Header>
+                  <strong className="mr-auto">The Corpus Project</strong>
+                  <small>Now</small>
+                </Toast.Header>
+                <Toast.Body>Success! Thank you for contributing!</Toast.Body>
+              </Toast>
             </Col>
           </Row>
           <Row style={{ marginTop: "1rem" }}>
