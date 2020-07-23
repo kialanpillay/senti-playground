@@ -13,6 +13,8 @@ import { withAuthenticator } from "@aws-amplify/ui-react";
 import awsconfig from "../aws-exports";
 
 import Navigation from "../components/Navigation";
+import NewsPieChart from "../components/NewsPieChart";
+import NewsBarChart from "../components/NewsBarChart";
 
 Amplify.configure(awsconfig);
 
@@ -143,11 +145,11 @@ class Newsreel extends Component {
           <Row style={{ marginTop: "0rem" }}>
             <Col md="auto">
               <h2 className="text">
-                Senti explores the top 20 headlines from {this.state.country}.
+                Senti explores the top headlines from {this.state.country} using bulk analysis.
               </h2>
             </Col>
           </Row>
-          <Row style={{ marginTop: "4rem" }} hidden={this.state.req}>
+          <Row style={{ marginTop: "2rem" }} hidden={this.state.req}>
             <Col md="auto">
               <Spinner animation="grow" />
             </Col>
@@ -156,18 +158,6 @@ class Newsreel extends Component {
             </Col>
           </Row>
           <Row style={{ marginTop: "2rem" }} hidden={!this.state.req}>
-            <Col md="auto">
-              <Card>
-                <Card.Body>
-                  <h1 className="digit">{this.state.positiveArticles}</h1>
-                  <h4 className="text"> Positive</h4>
-                  <h1 className="digit">{this.state.negativeArticles}</h1>
-                  <h4 className="text"> Negative</h4>
-                  <h1 className="digit">{this.state.neutralArticles}</h1>
-                  <h4 className="text"> Neutral</h4>
-                </Card.Body>
-              </Card>
-            </Col>
             <Col md={6}>
               <Card style={{ textAlign: "left" }}>
                 <Card.Header>Selection of Headlines</Card.Header>
@@ -190,7 +180,7 @@ class Newsreel extends Component {
                 </ListGroup>
               </Card>
             </Col>
-            <Col md="auto">
+            <Col md="auto" style={{ marginRight: "2rem" }}>
               <Card style={{ textAlign: "left" }}>
                 <Card.Header>Sentiment</Card.Header>
                 <ListGroup variant="flush">
@@ -200,6 +190,30 @@ class Newsreel extends Component {
                     );
                   })}
                 </ListGroup>
+              </Card>
+            </Col>
+            <Col md={2}>
+              <NewsBarChart
+                positive={this.state.positiveArticles}
+                negative={this.state.negativeArticles}
+                neutral={this.state.neutralArticles}
+              />
+              <NewsPieChart
+                positive={this.state.positiveArticles}
+                negative={this.state.negativeArticles}
+                neutral={this.state.neutralArticles}
+              />
+            </Col>
+            <Col md="auto">
+              <Card style={{ textAlign: "left" }}>
+                <Card.Body>
+                  <h1 className="digit">{this.state.positiveArticles}</h1>
+                  <h4>Positive</h4>
+                  <h1 className="digit">{this.state.negativeArticles}</h1>
+                  <h4>Negative</h4>
+                  <h1 className="digit">{this.state.neutralArticles}</h1>
+                  <h4>Neutral</h4>
+                </Card.Body>
               </Card>
             </Col>
           </Row>
