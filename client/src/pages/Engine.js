@@ -45,55 +45,23 @@ class Engine extends Component {
       text: "",
       prediction: null,
       response: null,
-      req: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleCall = this.handleCall.bind(this);
-    this.handleAnalysis = this.handleAnalysis.bind(this);
-    this.handleAWSAnalysis = this.handleAWSAnalysis.bind(this);
     this.processResponse = this.processResponse.bind(this);
   }
 
-  processResponse = (api) => {
-    let data;
-    console.log(this.state.response);
-    if (api === "AWS") {
-      data = {
-        classification: this.state.prediction.predominant,
-        pos: this.state.prediction.positive,
-        neg: this.state.prediction.negative,
-        neu: this.state.prediction.neutral,
-      };
-    }
-    if (api === "PD") {
-      const values = [
-        this.state.response.sentiment.positive,
-        this.state.response.sentiment.negative,
-        this.state.response.sentiment.neutral,
-      ];
-      const index = values.indexOf(Math.max(...values));
-      let classification;
-      if(index === 0){
-        classification = "Positive"
-      }
-      else if (index === 1){
-        classification = "Negative"
-      }
-      else {
-        classification = "Neutral"
-      }
-      data = {
-        classification: classification,
-        pos: this.state.response.sentiment.positive,
-        neg: this.state.response.sentiment.negative,
-        neu: this.state.response.sentiment.neutral,
-      };
-    }
-    return data;
+  handleChange = (event) => {
+    this.setState({ text: event.target.value });
   };
 
-  handleAWSAnalysis = () => {
+  handleCall = () => {
+    this.AWSAnalysis();
+    this.meaningCloudAnalysis();
+  };
+
+  AWSAnalysis = () => {
     Predictions.interpret({
       text: {
         source: {
@@ -110,26 +78,70 @@ class Engine extends Component {
       .catch((err) => console.log({ err }));
   };
 
-  handleChange = (event) => {
-    this.setState({ text: event.target.value });
-  };
-
-  handleCall = () => {
-    this.handleAWSAnalysis();
-    this.handleAnalysis();
-  };
-
-  handleAnalysis = () => {
+  paralleldotsAnalysis = () => {
     paralleldots
       .sentiment(this.state.text)
       .then((response) => {
-        this.setState({
-          response: JSON.parse(response),
-        });
+        console.log(response);
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  queryBuilder = (params) => {
+    let query = Object.keys(params)
+      .map((k) => encodeURIComponent(k) + "=" + encodeURIComponent(params[k]))
+      .join("&");
+    return query;
+  };
+
+  meaningCloudAnalysis = () => {
+    const params = {
+      txt: this.state.text,
+      key: "36199e9e0fd774d621355f41f3a1027d",
+      lang: "en",
+    };
+    let url =
+      "https://api.meaningcloud.com/sentiment-2.1?" + this.queryBuilder(params);
+    console.log(url);
+    fetch(url, {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        this.setState({ response: result });
+      });
+  };
+
+  processResponse = (api) => {
+    let data;
+    if (api === "AWS") {
+      data = {
+        classification: this.state.prediction.predominant,
+        pos: this.state.prediction.positive,
+        neg: this.state.prediction.negative,
+        neu: this.state.prediction.neutral,
+      };
+    }
+    if (api === "MeaningCloud") {
+      let classification;
+      if (this.state.response.score_tag.includes("P")) {
+        classification = "Positive";
+      } else if (
+        this.state.response.score_tag.includes("NEU") ||
+        this.state.response.score_tag.includes("NONE")
+      ) {
+        classification = "Neutral";
+      } else {
+        classification = "Negative";
+      }
+      data = {
+        classification: classification,
+      };
+    }
+
+    return data;
   };
 
   async componentDidMount() {
@@ -205,12 +217,14 @@ class Engine extends Component {
             <Col md={4}>
               {this.state.response != null ? (
                 <AnalysisCard
-                  link={"https://www.paralleldots.com/text-analysis-apis"}
+                  link={
+                    "https://www.meaningcloud.com/developer/sentiment-analysis/doc/2.1"
+                  }
                   req={true}
                   text={this.state.text}
-                  data={this.processResponse("PD")}
-                  api={"ParallelDots"}
-                  method={"Sentiment"}
+                  data={this.processResponse("MeaningCloud")}
+                  api={"MeaningCloud"}
+                  method={"Sentiment Analysis"}
                 />
               ) : null}
             </Col>
