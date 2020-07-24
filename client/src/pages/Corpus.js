@@ -187,7 +187,7 @@ class Corpus extends Component {
             <Col>
               <Toast show={this.state.show} onClose={() => this.setShow()}>
                 <Toast.Header>
-                  <strong className="mr-auto">The Corpus Project</strong>
+                  <strong className="mr-auto">Senti</strong>
                   <small>Now</small>
                 </Toast.Header>
                 <Toast.Body>Success! Thank you for contributing!</Toast.Body>
