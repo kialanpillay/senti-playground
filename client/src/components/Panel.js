@@ -11,16 +11,16 @@ import AnalysisCard from "./AnalysisCard";
 
 export default function Panel(props) {
   let link;
-  let method;
+  let endpoint;
   if (props.hasOwnProperty("route")) {
     link =
       props.route === "bayes/"
         ? "https://en.wikipedia.org/wiki/Naive_Bayes_classifier"
         : "https://github.com/cjhutto/vaderSentiment";
-    method = props.route === "bayes/" ? "Naive Bayes" : "VADER";
+        endpoint = props.route === "bayes/" ? "Naive Bayes" : "VADER";
   } else {
     link = props.link;
-    method = props.method;
+    endpoint = props.route;
   }
   const data = props.response;
 
@@ -30,7 +30,7 @@ export default function Panel(props) {
         <Col md={4}>
           <AnalysisCard
             req={props.req}
-            method={method}
+            endpoint={endpoint}
             api={props.api}
             text={props.text}
             data={data}
