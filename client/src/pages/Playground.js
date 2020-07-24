@@ -70,6 +70,7 @@ class Playground extends Component {
     } catch {
       console.log("Error");
     }
+    console.log(content)
   };
 
   handleChange = (event) => {
@@ -160,7 +161,7 @@ class Playground extends Component {
             response={this.state.response}
             api={this.state.api}
             curl={this.curlBuilder(this.state.route)}
-            copyHandler={this.copyHandler}
+            copyHandler={this.handleCopy}
           />
         </Container>
       </div>
