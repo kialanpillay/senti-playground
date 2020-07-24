@@ -85,7 +85,7 @@ class Corpus extends Component {
     this.setState({ phrase: "", show: true });
     let url = `${api}corpus`;
     fetch(url, {
-      method: "POST",
+      method: "PUT",
       headers: {
         "content-type": "application/json",
       },

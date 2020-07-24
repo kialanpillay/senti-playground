@@ -111,7 +111,7 @@ class Newsreel extends Component {
     const url = `${api}bulk`;
     const payload = this.processArticles();
     fetch(url, {
-      method: "PUT",
+      method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
