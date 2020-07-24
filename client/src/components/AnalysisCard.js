@@ -39,7 +39,7 @@ export default function AnalysisCard(props) {
           <Speech
             textAsButton={true}
             displayText="Listen"
-            text={`${props.api} classifies your sentence, ${props.text} as ${props.data.classification}.`}
+            text={`${props.api} classifies your sentence, ${props.text}, as ${props.data.classification}.`}
           />
         </Card.Body>
       </Card>

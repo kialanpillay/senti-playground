@@ -192,7 +192,7 @@ class Newsreel extends Component {
                 </ListGroup>
               </Card>
             </Col>
-            <Col md="auto" style={{ marginRight: "2rem" }}>
+            <Col md="auto">
               <Card style={{ textAlign: "left" }}>
                 <Card.Header>Sentiment</Card.Header>
                 <ListGroup variant="flush">
