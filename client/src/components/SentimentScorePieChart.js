@@ -2,10 +2,12 @@ import React from "react";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
 
 const COLORS = ["orange", "gray", "silver"];
+//Piechart that plots generated sentiment polarity scores
 
 export default function SentimentScorePieChart(props) {
   let data;
   if (props.route === "bayes/") {
+    //Senti Naive Bayes method does not generate polarity scores; default values are assigned
     data = [
       {
         name: "Positive",
@@ -24,15 +26,15 @@ export default function SentimentScorePieChart(props) {
     data = [
       {
         name: "Positive",
-        value: Math.round(props.data.pos * 100,2),
+        value: Math.round(props.data.pos * 100, 2),
       },
       {
         name: "Negative",
-        value: Math.round(props.data.neg * 100,2),
+        value: Math.round(props.data.neg * 100, 2),
       },
       {
         name: "Neutral",
-        value: Math.round(props.data.neu * 100,2),
+        value: Math.round(props.data.neu * 100, 2),
       },
     ];
   }
@@ -55,7 +57,8 @@ export default function SentimentScorePieChart(props) {
       >
         {data.map((entry, index) => (
           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-        ))}
+        ))}{" "}
+        {/*Maps each segment to a different color for rendering*/}
       </Pie>
     </PieChart>
   );

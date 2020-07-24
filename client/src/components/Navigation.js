@@ -3,6 +3,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { AmplifySignOut } from "@aws-amplify/ui-react";
 
+//Navigation bar component for the application; links are displayed once users have logged in
 export default function Navigation(props) {
   return (
     <Navbar bg="dark" variant="dark">
@@ -17,12 +18,14 @@ export default function Navigation(props) {
         <Nav.Link href="/newsreel">Newsreel</Nav.Link>
         <Nav.Link href="/corpus">Corpus Project</Nav.Link>
       </Nav>
-      <Navbar.Collapse className="justify-content-end" >
+      <Navbar.Collapse className="justify-content-end">
         <Navbar.Text hidden={!props.auth}>
-          <h6 className="username">Welcome, {props.auth ? props.username : null}</h6>
+          <h6 className="username">
+            Welcome, {props.auth ? props.username : null}
+          </h6>
         </Navbar.Text>
 
-        {props.auth ? <AmplifySignOut/> : null}
+        {props.auth ? <AmplifySignOut /> : null}
       </Navbar.Collapse>
     </Navbar>
   );

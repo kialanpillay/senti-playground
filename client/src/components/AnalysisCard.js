@@ -5,18 +5,22 @@ import Speech from "react-speech";
 
 // eslint-disable-next-line
 String.prototype.toSentenceCase = function () {
-  return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+  return this.replace(/\w\S*/g, function (txt) {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
 };
+//Converts a string to sentence case e.g. APPLE becomes Apple
 
 export default function AnalysisCard(props) {
   return (
-    <Card hidden={!props.req} style={{ textAlign: "left"}}>
+    <Card hidden={!props.req} style={{ textAlign: "left" }}>
+      {" "}
+      {/*Renders only on client request*/}
       <Card.Body>
         <Card.Title>{props.api}</Card.Title>
-        <Card.Subtitle
-          className="mb-2 text-muted"
-        >
-          {props.method}{" - "}
+        <Card.Subtitle className="mb-2 text-muted">
+          {props.method}
+          {" - "}
           <a
             href={props.link}
             target="_blank"

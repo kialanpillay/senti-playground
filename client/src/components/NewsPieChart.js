@@ -2,20 +2,21 @@ import React from "react";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
 
 const COLORS = ["orange", "gray", "silver"];
+//Piechart that displays the binned sentiment classification count of a set of news articles
 
 export default function NewsPieChart(props) {
   const data = [
     {
       name: "Positive",
-      value: props.positive
+      value: props.positive,
     },
     {
       name: "Negative",
-      value: props.negative
+      value: props.negative,
     },
     {
       name: "Neutral",
-      value: props.neutral
+      value: props.neutral,
     },
   ];
 

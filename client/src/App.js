@@ -14,7 +14,7 @@ import awsconfig from "./aws-exports";
 
 Amplify.configure(awsconfig);
 
-
+//React Router - SPA Navigation
 function App() {
   return (
     <div>

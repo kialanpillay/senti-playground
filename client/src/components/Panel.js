@@ -7,6 +7,8 @@ import CopyButton from "./CopyButton";
 import SentimentScorePieChart from "./SentimentScorePieChart";
 import AnalysisCard from "./AnalysisCard";
 
+//Panel component for Playground, that contains various informational components
+
 export default function Panel(props) {
   let link;
   let method;
@@ -44,7 +46,7 @@ export default function Panel(props) {
       <Row style={{ marginTop: "0rem" }}>
         <Col md={10}>
           <Table
-            hidden={!(props.req && props.hasOwnProperty("curl"))}
+            hidden={!(props.req && props.hasOwnProperty("curl"))} //If cURL not provided, do not render Table
             style={{ textAlign: "left" }}
           >
             <thead>
