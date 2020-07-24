@@ -9,7 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import rapid from "../assets/rapid.png";
 import aws from "../assets/aws.png";
-import azure from "../assets/azure.png";
+import pd from "../assets/pd.png";
 
 import Amplify, { Auth, Hub } from "aws-amplify";
 import Predictions, {
@@ -17,9 +17,12 @@ import Predictions, {
 } from "@aws-amplify/predictions";
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import awsconfig from "../aws-exports";
+import paralleldots from "paralleldots";
 
 import Navigation from "../components/Navigation";
 import AnalysisCard from "../components/AnalysisCard";
+
+paralleldots.apiKey = "z6AGlBBzF9d8pF3VlsEA2ZSSKvHfwWoL9CvMlybvcOE";
 
 Amplify.configure(awsconfig);
 Amplify.addPluggable(new AmazonAIPredictionsProvider());
@@ -63,12 +66,13 @@ class Engine extends Component {
         neu: this.state.prediction.neutral,
       };
     }
-    if (api === "fyhao") {
+    if (api === "PD") {
       data = {
-        classification: this.state.response.pos > 0.5 ? "Positive" : "Negative",
-        pos: this.state.response.pos,
-        neg: this.state.response.neg,
-        neu: this.state.response.mid,
+        classification:
+          this.state.response.sentiment.positive > 0.5 ? "Positive" : "Negative",
+        pos: this.state.response.sentiment.positive,
+        neg: this.state.response.sentiment.negative,
+        neu: this.state.response.sentiment.neutral,
       };
     }
     return data;
@@ -101,25 +105,13 @@ class Engine extends Component {
   };
 
   handleAnalysis = () => {
-    let url = "https://text-sentiment.p.rapidapi.com/analyze";
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "x-rapidapi-host": "text-sentiment.p.rapidapi.com",
-        "x-rapidapi-key": "646e81359bmsh810817ffde70fc2p16998cjsn345cdec67f45",
-        "content-type": "application/x-www-form-urlencoded",
-      },
-      body: {
-        text: this.state.text,
-      },
+    paralleldots.sentiment(this.state.text)
+    .then((response) => {
+      this.setState({
+        response: JSON.parse(response),
+      });
     })
-      .then((response) => response.json())
-      .then((result) => {
-        this.setState({
-          response: result,
-        });
-      })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
       });
   };
@@ -151,7 +143,7 @@ class Engine extends Component {
               <img src={aws} width={200} alt="Amazon Web Services"></img>
             </Col>
             <Col md="auto">
-              <img src={azure} width={300} alt="Microsoft Azure"></img>
+              <img src={pd} width={400} alt="Microsoft Azure"></img>
             </Col>
             <Col md="auto">
               <img src={rapid} width={100} alt="RapidAPI"></img>
@@ -198,13 +190,13 @@ class Engine extends Component {
               {this.state.response != null ? (
                 <AnalysisCard
                   link={
-                    "https://rapidapi.com/fyhao/api/text-sentiment-analysis-method/"
+                    "https://www.paralleldots.com/text-analysis-apis"
                   }
                   req={true}
                   text={this.state.text}
-                  data={this.processResponse("fyhao")}
-                  api={"RapidAPI (fyhao)"}
-                  method={"Text Sentiment Analysis"}
+                  data={this.processResponse("PD")}
+                  api={"ParallelDots"}
+                  method={"Sentiment"}
                 />
               ) : null}
             </Col>
