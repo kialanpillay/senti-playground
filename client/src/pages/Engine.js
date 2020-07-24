@@ -67,9 +67,24 @@ class Engine extends Component {
       };
     }
     if (api === "PD") {
+      const values = [
+        this.state.response.sentiment.positive,
+        this.state.response.sentiment.negative,
+        this.state.response.sentiment.neutral,
+      ];
+      const index = values.indexOf(Math.max(...values));
+      let classification;
+      if(index === 0){
+        classification = "Positive"
+      }
+      else if (index === 1){
+        classification = "Negative"
+      }
+      else {
+        classification = "Neutral"
+      }
       data = {
-        classification:
-          this.state.response.sentiment.positive > 0.5 ? "Positive" : "Negative",
+        classification: classification,
         pos: this.state.response.sentiment.positive,
         neg: this.state.response.sentiment.negative,
         neu: this.state.response.sentiment.neutral,
@@ -105,12 +120,13 @@ class Engine extends Component {
   };
 
   handleAnalysis = () => {
-    paralleldots.sentiment(this.state.text)
-    .then((response) => {
-      this.setState({
-        response: JSON.parse(response),
-      });
-    })
+    paralleldots
+      .sentiment(this.state.text)
+      .then((response) => {
+        this.setState({
+          response: JSON.parse(response),
+        });
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -189,9 +205,7 @@ class Engine extends Component {
             <Col md={4}>
               {this.state.response != null ? (
                 <AnalysisCard
-                  link={
-                    "https://www.paralleldots.com/text-analysis-apis"
-                  }
+                  link={"https://www.paralleldots.com/text-analysis-apis"}
                   req={true}
                   text={this.state.text}
                   data={this.processResponse("PD")}
