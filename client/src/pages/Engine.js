@@ -9,7 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import rapid from "../assets/rapid.png";
 import aws from "../assets/aws.png";
-import pd from "../assets/pd.png";
+import azure from "../assets/azure.png";
 
 import Amplify, { Auth, Hub } from "aws-amplify";
 import Predictions, {
@@ -45,6 +45,7 @@ class Engine extends Component {
       text: "",
       prediction: null,
       response: null,
+      azureResponse: null,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -58,6 +59,7 @@ class Engine extends Component {
 
   handleCall = () => {
     this.AWSAnalysis();
+    this.azureAnalysis();
     this.meaningCloudAnalysis();
   };
 
@@ -96,6 +98,35 @@ class Engine extends Component {
     return query;
   };
 
+  azureAnalysis = () => {
+    const payload = {
+      documents: [
+        {
+          id: "1",
+          language: "en",
+          text: this.state.text,
+        },
+      ],
+    };
+    fetch("https://microsoft-text-analytics1.p.rapidapi.com/sentiment", {
+      method: "POST",
+      headers: {
+        "x-rapidapi-host": "microsoft-text-analytics1.p.rapidapi.com",
+        "x-rapidapi-key": "646e81359bmsh810817ffde70fc2p16998cjsn345cdec67f45",
+        "content-type": "application/json",
+        accept: "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        this.setState({ azureResponse: result.documents[0] });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   meaningCloudAnalysis = () => {
     const params = {
       txt: this.state.text,
@@ -104,7 +135,6 @@ class Engine extends Component {
     };
     let url =
       "https://api.meaningcloud.com/sentiment-2.1?" + this.queryBuilder(params);
-    console.log(url);
     fetch(url, {
       method: "GET",
     })
@@ -125,22 +155,40 @@ class Engine extends Component {
       };
     }
     if (api === "MeaningCloud") {
-      let classification;
       if (this.state.response.score_tag.includes("P")) {
-        classification = "Positive";
+        data = {
+          classification: "Positive",
+          pos: this.state.response.confidence * 0.01,
+          neg: 0,
+          neu: 0,
+        };
       } else if (
         this.state.response.score_tag.includes("NEU") ||
         this.state.response.score_tag.includes("NONE")
       ) {
-        classification = "Neutral";
+        data = {
+          classification: "Neutral",
+          pos: 0,
+          neg: 0,
+          neu: this.state.response.confidence * 0.01,
+        };
       } else {
-        classification = "Negative";
+        data = {
+          classification: "Negative",
+          pos: 0,
+          neg: this.state.response.confidence * 0.01,
+          neu: 0,
+        };
       }
+    }
+    if (api === "Azure") {
       data = {
-        classification: classification,
+        classification: this.state.azureResponse.sentiment,
+        pos: this.state.azureResponse.documentScores.positive,
+        neg: this.state.azureResponse.documentScores.negative,
+        neu: this.state.azureResponse.documentScores.neutral,
       };
     }
-
     return data;
   };
 
@@ -171,7 +219,7 @@ class Engine extends Component {
               <img src={aws} width={200} alt="Amazon Web Services"></img>
             </Col>
             <Col md="auto">
-              <img src={pd} width={400} alt="Microsoft Azure"></img>
+              <img src={azure} width={300} alt="Microsoft Azure"></img>
             </Col>
             <Col md="auto">
               <img src={rapid} width={100} alt="RapidAPI"></img>
@@ -202,29 +250,43 @@ class Engine extends Component {
               this.state.prediction == null || this.state.response == null
             }
           >
-            <Col md={4}>
+            <Col md={3}>
               {this.state.prediction != null ? (
                 <AnalysisCard
                   link={"https://aws.amazon.com/comprehend/"}
-                  req={true}
                   text={this.state.text}
                   data={this.processResponse("AWS")}
-                  api={"Amazon Web Services"}
-                  method={"AWS Comprehend"}
+                  org={"Amazon Web Services"}
+                  api={"AWS Comprehend"}
+                  engine={true}
                 />
               ) : null}
             </Col>{" "}
-            <Col md={4}>
+            <Col md={3}>
+              {this.state.azureResponse != null ? (
+                <AnalysisCard
+                  link={
+                    "https://rapidapi.com/microsoft-azure-org-microsoft-cognitive-services/api/microsoft-text-analytics1"
+                  }
+                  text={this.state.text}
+                  data={this.processResponse("Azure")}
+                  org={"Microsoft Azure"}
+                  api={"Microsoft Text Analysis"}
+                  engine={true}
+                />
+              ) : null}
+            </Col>
+            <Col md={3}>
               {this.state.response != null ? (
                 <AnalysisCard
                   link={
                     "https://www.meaningcloud.com/developer/sentiment-analysis/doc/2.1"
                   }
-                  req={true}
                   text={this.state.text}
                   data={this.processResponse("MeaningCloud")}
-                  api={"MeaningCloud"}
-                  method={"Sentiment Analysis"}
+                  org={"MeaningCloud"}
+                  api={"Sentiment Analysis"}
+                  engine={true}
                 />
               ) : null}
             </Col>
