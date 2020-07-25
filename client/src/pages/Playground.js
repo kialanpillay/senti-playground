@@ -52,7 +52,7 @@ class Playground extends Component {
 
   //Handles copying cURL to clipboard
   handleCopy = () => {
-    let content = this.curlBuilder();
+    let content = this.curlBuilder(this.state.route);
     try {
       copy(content);
     } catch {
