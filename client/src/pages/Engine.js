@@ -10,6 +10,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import rapid from "../assets/rapid.png";
 import aws from "../assets/aws.png";
 import azure from "../assets/azure.png";
+import meaningcloud from "../assets/meaningcloud.png";
 
 import Amplify, { Auth, Hub } from "aws-amplify";
 import Predictions, {
@@ -223,6 +224,9 @@ class Engine extends Component {
             </Col>
             <Col md="auto">
               <img src={rapid} width={100} alt="RapidAPI"></img>
+            </Col>
+            <Col md="auto">
+              <img src={meaningcloud} width={250} alt="MeaningCloud"></img>
             </Col>
           </Row>
           <Row style={{ marginTop: "2rem" }}>
