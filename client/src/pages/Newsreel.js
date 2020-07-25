@@ -136,7 +136,7 @@ class Newsreel extends Component {
         >
           <Row>
             <Col md={10}>
-              <h1 className="heading" onClick={() => this.handleSubmit()}>
+              <h1 className="heading">
                 Newsreel
                 <Icon
                   style={{
