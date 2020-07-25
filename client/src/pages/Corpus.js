@@ -50,7 +50,7 @@ class Corpus extends Component {
       count: 0,
       show: false,
     };
-    //Hander binding
+    //Handler binding
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.setSentiment = this.setSentiment.bind(this);
