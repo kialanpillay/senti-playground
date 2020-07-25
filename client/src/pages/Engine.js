@@ -193,7 +193,7 @@ class Engine extends Component {
         <Navigation username={this.state.username} auth={this.state.auth} />
         <Container style={{ marginTop: "4rem" }}>
           <Row>
-            <Col md={10}>
+            <Col md={12}>
               <h1 className="heading">Sentiment Engine</h1>
             </Col>
           </Row>
@@ -264,7 +264,7 @@ class Engine extends Component {
                   text={this.state.text}
                   data={this.processResponse("Azure")}
                   org={"Microsoft Azure"}
-                  api={"Microsoft Text Analysis"}
+                  api={"Text Analysis"}
                   engine={true}
                 />
               ) : null}

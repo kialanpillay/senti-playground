@@ -17,7 +17,7 @@ export default function AnalysisCard(props) {
   const max = Math.max(...arr);
   if (props.engine) {
     return (
-      <Card style={{ textAlign: "left" }}>
+      <Card style={{ textAlign: "left", height: "11rem"}}>
         {" "}
         {/*Card for Sentiment Engine Results*/}
         <Card.Body>

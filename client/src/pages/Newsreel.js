@@ -135,7 +135,7 @@ class Newsreel extends Component {
           hidden={this.state.country === ""}
         >
           <Row>
-            <Col md={10}>
+            <Col md={12}>
               <h1 className="heading">
                 Newsreel
                 <Icon

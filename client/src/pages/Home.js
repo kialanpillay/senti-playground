@@ -96,7 +96,7 @@ class Home extends Component {
             style={{ marginTop: "3rem" }}
             className="justify-content-md-left"
           >
-            <Col md={10}>
+            <Col md={11}>
               <Card style={{ textAlign: "left", height: "10rem" }}>
                 <Card.Body>
                   <Card.Title>

@@ -99,7 +99,7 @@ class Playground extends Component {
         <Navigation username={this.state.username} auth={this.state.auth} />
         <Container style={{ marginTop: "4rem" }}>
           <Row>
-            <Col md={10}>
+            <Col md={12}>
               <h1 className="heading">Introducing Senti API</h1>
             </Col>
           </Row>
