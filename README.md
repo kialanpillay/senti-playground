@@ -13,6 +13,7 @@ Welcome to [Senti Playground](https://dev.d326y2f9qgagyn.amplifyapp.com/), a Rea
 * [Senti API](https://github.com/kialanpillay/senti-api) - [Documentation](https://senti-ment-api.herokuapp.com/)
 * [ipapi](https://ipapi.co)
 * [Open Weather Map](https://openweathermap.org)
+* [Coronavirus COVID19 API](https://documenter.getpostman.com/view/10808728/SzS8rjbc?version=latest)
 * [NewsAPI](https://newsapi.org)
 * [Amazon Web Services Comprehend](https://aws.amazon.com/comprehend/)
 * [Microsoft Text Analysis](https://rapidapi.com/microsoft-azure-org-microsoft-cognitive-services/api/microsoft-text-analytics1)

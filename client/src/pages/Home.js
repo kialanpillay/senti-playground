@@ -40,7 +40,7 @@ class Home extends Component {
       .then((user) => {
         this.setState({ username: user.username, auth: true });
       })
-      .catch((user) => {
+      .catch(() => {
         this.setState({ username: "", auth: false });
       });
   };
@@ -58,7 +58,9 @@ class Home extends Component {
     );
     const weather = await res.json();
 
-    res = await fetch("https://pomber.github.io/covid19/timeseries.json");
+    res = await fetch("https://api.covid19api.com/total/country/south-africa", {
+      method: "GET",
+    });
     const data = await res.json();
     this.setState({ weather: weather, data: data, ip: ip });
   }
@@ -147,33 +149,15 @@ class Home extends Component {
                       </Col>
                       <Col md="auto">
                         Confirmed
-                        <h5>
-                          {
-                            this.state.data[this.state.ip.country_name].slice(
-                              -1
-                            )[0].confirmed
-                          }
-                        </h5>
+                        <h5>{this.state.data.slice(-1)[0].Confirmed}</h5>
                       </Col>
                       <Col md="auto">
                         Recoveries
-                        <h5>
-                          {
-                            this.state.data[this.state.ip.country_name].slice(
-                              -1
-                            )[0].recovered
-                          }
-                        </h5>
+                        <h5>{this.state.data.slice(-1)[0].Recovered}</h5>
                       </Col>
                       <Col md="auto">
                         Deaths
-                        <h5>
-                          {
-                            this.state.data[this.state.ip.country_name].slice(
-                              -1
-                            )[0].deaths
-                          }
-                        </h5>
+                        <h5>{this.state.data.slice(-1)[0].Deaths}</h5>
                       </Col>
                     </Row>
                   ) : (

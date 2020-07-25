@@ -159,7 +159,7 @@ class Corpus extends Component {
                   <Button
                     variant="outline-secondary"
                     disabled={
-                      this.state.sentiment === "" || this.state.text === ""
+                      this.state.sentiment === "" || this.state.phrase === ""
                     }
                     onClick={() => this.handleSubmit()}
                   >
