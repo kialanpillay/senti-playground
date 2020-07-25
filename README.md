@@ -21,11 +21,13 @@ Welcome to [Senti Playground](https://dev.d326y2f9qgagyn.amplifyapp.com/), a Rea
 * [ParallelDots Sentiment Analysis](https://www.paralleldots.com/sentiment-analysis) - See Notes Below
 
 ## UCT DevSoc Competition Notes
-The Senti Playground is built using React and AWS Amplify, an open-source framework for building rich, scalable web applications. The site is also hosted using AWS. Senti Playground integrates with a number of different APIs to deliver the user experience. Senti Playground has partnered with [Remote](https://remote-mu.vercel.app/) (yes, I know I also built it xD)  to bring you Remote-branded information on your current local weather and COVID-19 statistics on the homepage using several APIs. Senti Playground requires an account to be used. Simply create one when prompted to, or if returning, just login with your username and password. If for some reason, you do not wish to create an account, you may use the following details to login
-* Username: DevSoc
-* Password uct12345
+The Senti Playground is built using React and AWS Amplify, an open-source framework for building rich, scalable web applications. The site is also hosted using AWS. Senti Playground integrates with a number of different APIs to deliver the user experience. Senti Playground has partnered with [Remote](https://remote-mu.vercel.app/) (yes, I know I also built it xD)  to bring you Remote-branded information on your current local weather and COVID-19 statistics on the homepage using several APIs. 
 
-Senti Playground uses the sentiment analysis functionality from our own built-from-scratch Senti API (see other repo for full source code), which is a Python Flask application that hosted is hosted on a Heroku dyno. Although we advertise blazingly fast analysis, do take into account that the Heroku dyno only spins up on request with the free-plan, and thus you might have to wait a bit longer on your first request. Subsequent calls will be fast, so don't stress! 
+Senti Playground requires an account to be used. Simply create one when prompted to, or if returning, just login with your username and password. Account creation requires email validation. If for some reason, you do not wish to create an account, you may use the following details to login:
+* Username: DevSoc
+* Password: uct12345
+
+Senti Playground uses the sentiment analysis functionality from our own built-from-scratch [Senti API](https://github.com/kialanpillay/senti-api) (see repository for full source code), which is a Python Flask application hosted on a Heroku dyno. Although we advertise blazingly fast analysis, do take into account that the Heroku dyno only spins up on request with the free-plan, and thus you might have to wait a bit longer on your first request. Subsequent calls will be fast, so don't stress! 
 
 We also integrate with three other APIs, the AWS Comprehend service via AWS Amplify Predictions, Microsoft Text Analysis via RapidAPI, and MeaningCloud Text Analysis API. You can learn more about this services by visiting the links displayed on the Playground. Note that there is code for a fourth integration with a ParallelDots API, however this API call was removed as ParallelDots exposes an unsecured endpoint so requests will fail in a production environment. Code is maintained in the event of a SSL upgrade of their API. 
 
