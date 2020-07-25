@@ -9,6 +9,16 @@ Welcome to [Senti Playground](https://dev.d326y2f9qgagyn.amplifyapp.com/), a Rea
 * [Newsreel](https://dev.d326y2f9qgagyn.amplifyapp.com/newsreel) - Sentiment analysis and NLP are often misunderstood and concpetually shrouded in secrecy. What better way to understand the concept by applying sentiment analysis to real-world data. Senti Playground automatically serves you the latest top headlines from your country, and using the Senti API bulk analysis feature, each headline is classified and the results presented to you in a mini-dashboard. Senti uses real live news, so feel free to click on a link and read the articles if something piques your interest!
 * [The Corpus Project](https://dev.d326y2f9qgagyn.amplifyapp.com/corpus) - Any Machine Learning model is only as good as the training data. The best sentiment classifiers are trained using millions of words from a wide vareity of sources and contexts. For sentiment analysis models to be accurate, they need to learn using modern terminology, and Senti invites you to contribute to our growing Gen Z lexicon by submitting a word or phrase that you frequently use or is commonly thought of as slang, as well as the generally accepted sentiment. By open-sourcing our dataset creating, Senti aims to supercharge our model improvement and allow Senti API to reach new heights. Submit on the dedicated page using the simple interface; keep track of our goal using the progress bar. Each submission will fill the bar and help us improve!
 
+## Consumed APIs 
+* [Senti API](https://github.com/kialanpillay/senti-api) - [Documentation](https://senti-ment-api.herokuapp.com/)
+* [ipapi](https://ipapi.co)
+* [Open Weather Map](https://openweathermap.org)
+* [NewsAPI](https://newsapi.org)
+* [Amazon Web Services Comprehend](https://aws.amazon.com/comprehend/)
+* [Microsoft Text Analysis](https://rapidapi.com/microsoft-azure-org-microsoft-cognitive-services/api/microsoft-text-analytics1)
+* [MeaningCloud Sentiment Analysis](https://www.meaningcloud.com/developer/sentiment-analysis)
+* [ParallelDots Sentiment Analysis](https://www.paralleldots.com/sentiment-analysis) - See Notes Below
+
 ## UCT DevSoc Competition Notes
 The Senti Playground is built using React and AWS Amplify, an open-source framework for building rich, scalable web applications. The site is also hosted using AWS. Senti Playground integrates with a number of different APIs to deliver the user experience. Senti Playground has partnered with [Remote](https://remote-mu.vercel.app/) (yes, I know I also built it xD)  to bring you Remote-branded information on your current local weather and COVID-19 statistics on the homepage using several APIs. Senti Playground requires an account to be used. Simply create one when prompted to, or if returning, just login with your username and password. If for some reason, you do not wish to create an account, you may use the following details to login
 * Username: DevSoc
