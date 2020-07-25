@@ -10,7 +10,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import masks from "../assets/masks.png";
 import Navigation from "../components/Navigation";
 
-import Amplify from "aws-amplify";
+import Amplify, { Auth, Hub } from "aws-amplify";
 import awsconfig from "../aws-exports";
 
 Amplify.configure(awsconfig);
@@ -23,7 +23,18 @@ class Home extends Component {
       data: null,
       ip: null,
     };
+    Hub.listen("auth", this.listener); //Hub for listening to auth events
   }
+
+  listener = (data) => {
+    if (data.payload.event === "signIn") {
+      console.log("user signed in");
+    } else {
+      console.log("user signed out");
+    }
+  };
+
+  //Asynchronously retrieves location information and current weather data for render in Remote widget
   async componentDidMount() {
     let res = await fetch(`https://ipapi.co/json/`);
     const ip = await res.json();

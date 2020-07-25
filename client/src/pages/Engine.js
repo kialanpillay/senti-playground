@@ -22,6 +22,7 @@ import paralleldots from "paralleldots";
 
 import Navigation from "../components/Navigation";
 import AnalysisCard from "../components/AnalysisCard";
+import queryBuilder from "../functions/queryBuilder";
 
 paralleldots.apiKey = "z6AGlBBzF9d8pF3VlsEA2ZSSKvHfwWoL9CvMlybvcOE";
 
@@ -35,7 +36,7 @@ const listener = (data) => {
     console.log("user signed out");
   }
 };
-Hub.listen("auth", listener);
+Hub.listen("auth", listener); //Hub for listening to auth events
 
 class Engine extends Component {
   constructor(props) {
@@ -44,26 +45,26 @@ class Engine extends Component {
       username: "",
       auth: false,
       text: "",
-      prediction: null,
-      response: null,
-      azureResponse: null,
+      prediction: null, //AWS Response
+      response: null, //MeaninCloud Response
+      azureResponse: null, //MS Azure Response
     };
-
+    //Handler binding
     this.handleChange = this.handleChange.bind(this);
     this.handleCall = this.handleCall.bind(this);
     this.processResponse = this.processResponse.bind(this);
   }
-
+  //Handles user text input
   handleChange = (event) => {
     this.setState({ text: event.target.value });
   };
-
+  //Handles multiple API calls on user interaction
   handleCall = () => {
     this.AWSAnalysis();
     this.azureAnalysis();
     this.meaningCloudAnalysis();
   };
-
+  //Retrieves sentiment prediction using AWS Comprehend service and AWS Amplify Predictions
   AWSAnalysis = () => {
     Predictions.interpret({
       text: {
@@ -80,7 +81,8 @@ class Engine extends Component {
       })
       .catch((err) => console.log({ err }));
   };
-
+  //Gets sentiment analysis results from ParallelDots NodeJS API-wrapper module.
+  //Note that function is not currently called (See README)
   paralleldotsAnalysis = () => {
     paralleldots
       .sentiment(this.state.text)
@@ -91,14 +93,8 @@ class Engine extends Component {
         console.log(error);
       });
   };
-
-  queryBuilder = (params) => {
-    let query = Object.keys(params)
-      .map((k) => encodeURIComponent(k) + "=" + encodeURIComponent(params[k]))
-      .join("&");
-    return query;
-  };
-
+  //Gets sentiment analysis results for a single document from MS Text Analytics API
+  //POST Request
   azureAnalysis = () => {
     const payload = {
       documents: [
@@ -127,7 +123,8 @@ class Engine extends Component {
         console.log(err);
       });
   };
-
+  //Gets sentiment analysis results from MeaningCloud Sentiment Analysis API
+  //GET Request
   meaningCloudAnalysis = () => {
     const params = {
       txt: this.state.text,
@@ -135,7 +132,7 @@ class Engine extends Component {
       lang: "en",
     };
     let url =
-      "https://api.meaningcloud.com/sentiment-2.1?" + this.queryBuilder(params);
+      "https://api.meaningcloud.com/sentiment-2.1?" + queryBuilder(params);
     fetch(url, {
       method: "GET",
     })
@@ -144,7 +141,7 @@ class Engine extends Component {
         this.setState({ response: result });
       });
   };
-
+  //Processes each API response into a uniform format for rendering in other components
   processResponse = (api) => {
     let data;
     if (api === "AWS") {

@@ -26,7 +26,7 @@ const listener = (data) => {
     console.log("user signed out");
   }
 };
-Hub.listen("auth", listener);
+Hub.listen("auth", listener); //Hub for listening to auth events
 const api = "https://senti-ment-api.herokuapp.com/";
 
 class Newsreel extends Component {
@@ -51,6 +51,7 @@ class Newsreel extends Component {
       username: user.username,
       auth: true,
     });
+    //Retrieve location data from the IPAPI API
     const res = await fetch(`https://ipapi.co/json/`);
     const ip = await res.json();
     this.setState({
@@ -61,6 +62,7 @@ class Newsreel extends Component {
   }
 
   processResponse = () => {
+    //Process Senti Bulk Analysis response for dashboard components
     this.state.classification.forEach((item) => {
       if (item.classification === "Positive") {
         this.setState({ positiveArticles: this.state.positiveArticles + 1 });
@@ -74,7 +76,7 @@ class Newsreel extends Component {
       req: true,
     });
   };
-
+  //Maps retrived articles to a JSON object for /bulk request payload
   processArticles = () => {
     const documents = this.state.articles.map((article) => {
       return {
@@ -84,6 +86,7 @@ class Newsreel extends Component {
     return { documents };
   };
 
+  //Retrieves cached sample news headlines
   getSampleNews = () => {
     this.setState({
       articles: articles,
@@ -91,6 +94,7 @@ class Newsreel extends Component {
     this.bulkSentimentAnalysis();
   };
 
+  //Gets country-specific headlines from NewsAPI
   getNews = (code) => {
     fetch(
       `https://newsapi.org/v2/top-headlines?country=${code}&apiKey=e3c7d810af0e41dd869013ab5c5d66e9`
@@ -106,7 +110,7 @@ class Newsreel extends Component {
         console.log(error);
       });
   };
-
+  //Gets sentiment analysis results for multiple documents from Senti API
   bulkSentimentAnalysis = () => {
     const url = `${api}bulk`;
     const payload = this.processArticles();
@@ -184,7 +188,9 @@ class Newsreel extends Component {
                           rel="noopener noreferrer"
                           style={{ color: "black" }}
                         >
-                          {article.title.length < 60 ? article.title : article.title.substring(0, 60)+ "..."}
+                          {article.title.length < 60
+                            ? article.title
+                            : article.title.substring(0, 60) + "..."}
                         </a>
                       </ListGroup.Item>
                     );

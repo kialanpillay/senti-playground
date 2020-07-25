@@ -32,6 +32,7 @@ const listener = (data) => {
 Hub.listen("auth", listener);
 const api = "https://senti-ment-api.herokuapp.com/";
 
+//Word cloud display options
 const cloud_options = {
   colors: ["silver", "black", "#282c34", "orange"],
   deterministic: false,
@@ -57,25 +58,25 @@ class Corpus extends Component {
       count: 0,
       show: false,
     };
-
+    //Hander binding
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.setSentiment = this.setSentiment.bind(this);
     this.setShow = this.setShow.bind(this);
   }
-
+  //Sets state boolean variable for displaying Toast
   setShow = () => {
     this.setState({ show: !this.state.show });
   };
-
+  //Sets sentiment variable for user phrase submission
   setSentiment = (value) => {
     this.setState({ sentiment: value });
   };
-
+  //Handles user text input
   handleChange = (event) => {
     this.setState({ phrase: event.target.value, show: false });
   };
-
+  //Handles user submission; makes POST request to /corpus endpoint
   handleSubmit = () => {
     const data = {
       user: this.state.username,
@@ -92,13 +93,13 @@ class Corpus extends Component {
       body: JSON.stringify(data),
     });
   };
-
+  //Gets authenticated user
   async componentDidMount() {
     let user = await Auth.currentAuthenticatedUser();
     this.setState({ username: user.username, auth: true });
     this.getItemCount();
   }
-
+  //Gets corpus submission count from Senti API endpoint for progress bar
   getItemCount = () => {
     let url = `${api}corpus`;
     fetch(url, {
@@ -133,7 +134,8 @@ class Corpus extends Component {
           <Row style={{ marginTop: "0rem" }}>
             <Col md="auto">
               <h2 className="text">
-                Help improve our classifiers by contributing to our Gen Z lexicon.
+                Help improve our classifiers by contributing to our Gen Z
+                lexicon.
               </h2>
             </Col>
           </Row>

@@ -1,3 +1,5 @@
+//Selection of words for wordcloud render
+
 export default [
   {
     text: "thicc",

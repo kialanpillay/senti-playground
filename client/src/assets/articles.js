@@ -1,3 +1,5 @@
+//Sample news articles for bulk analysis demonstration. See README for workaround details.
+
 export default [
   {
     title:

@@ -16,6 +16,7 @@ import copy from "copy-to-clipboard";
 
 import Navigation from "../components/Navigation";
 import Panel from "../components/Panel";
+import queryBuilder from "../functions/queryBuilder";
 
 Amplify.configure(awsconfig);
 
@@ -46,23 +47,18 @@ class Playground extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleAnalysis = this.handleAnalysis.bind(this);
   }
-
-  queryBuilder = (params) => {
-    let query = Object.keys(params)
-      .map((k) => encodeURIComponent(k) + "=" + encodeURIComponent(params[k]))
-      .join("&");
-    return query;
-  };
-
+  //Returns a cURL command
   curlBuilder = (route) => {
     let url = this.requestBuilder(route);
     return `curl -X GET ${url}`;
   };
 
+  //Returns a request URL for a particular API, route, and parameters
   requestBuilder = (route) => {
-    return api + route + this.queryBuilder({ text: this.state.text });
+    return api + route + queryBuilder({ text: this.state.text });
   };
 
+  //Handles copying cURL to clipboard
   handleCopy = () => {
     let content = this.curlBuilder();
     try {
@@ -70,13 +66,14 @@ class Playground extends Component {
     } catch {
       console.log("Error");
     }
-    console.log(content)
+    console.log(content);
   };
-
+  //Handles user text input
   handleChange = (event) => {
     this.setState({ text: event.target.value, req: false });
   };
-
+  //Gets sentiment analysis results from Senti API using the user-defined routes/method
+  //GET Request
   handleAnalysis = (route) => {
     this.setState({ route: route, req: false });
     let url = this.requestBuilder(route);
@@ -154,6 +151,7 @@ class Playground extends Component {
               </InputGroup>
             </Col>
           </Row>
+          {/*Renders sentiment analysis data panel*/}
           <Panel
             route={this.state.route}
             req={this.state.req}
