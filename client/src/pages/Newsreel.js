@@ -8,7 +8,7 @@ import Spinner from "react-bootstrap/Spinner";
 import Icon from "@material-ui/core/Icon";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import Amplify, { Auth, Hub } from "aws-amplify";
+import Amplify, { Auth } from "aws-amplify";
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import awsconfig from "../aws-exports";
 
@@ -19,14 +19,6 @@ import articles from "../assets/articles";
 
 Amplify.configure(awsconfig);
 
-const listener = (data) => {
-  if (data.payload.event === "signIn") {
-    console.log("user signed in");
-  } else {
-    console.log("user signed out");
-  }
-};
-Hub.listen("auth", listener); //Hub for listening to auth events
 const api = "https://senti-ment-api.herokuapp.com/";
 
 class Newsreel extends Component {

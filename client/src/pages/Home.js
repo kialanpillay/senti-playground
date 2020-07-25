@@ -22,20 +22,32 @@ class Home extends Component {
       weather: null,
       data: null,
       ip: null,
+      auth: false,
+      user: "",
     };
     Hub.listen("auth", this.listener); //Hub for listening to auth events
   }
 
   listener = (data) => {
-    if (data.payload.event === "signIn") {
-      console.log("user signed in");
-    } else {
-      console.log("user signed out");
+    if (data.payload.event === "signOut") {
+      this.setState({ username: "", auth: false });
     }
+  };
+
+  //Checks if user is authenticated (logged-in)
+  authenticate = () => {
+    Auth.currentAuthenticatedUser()
+      .then((user) => {
+        this.setState({ username: user.username, auth: true });
+      })
+      .catch((user) => {
+        this.setState({ username: "", auth: false });
+      });
   };
 
   //Asynchronously retrieves location information and current weather data for render in Remote widget
   async componentDidMount() {
+    this.authenticate();
     let res = await fetch(`https://ipapi.co/json/`);
     const ip = await res.json();
     res = await fetch(
@@ -54,7 +66,7 @@ class Home extends Component {
   render() {
     return (
       <div className="App">
-        <Navigation auth={false} />
+        <Navigation auth={this.state.auth} username={this.state.username} />
         <Container style={{ marginTop: "4rem" }}>
           <Row>
             <Col md={9}>

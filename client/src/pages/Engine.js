@@ -12,7 +12,7 @@ import aws from "../assets/aws.png";
 import azure from "../assets/azure.png";
 import meaningcloud from "../assets/meaningcloud.png";
 
-import Amplify, { Auth, Hub } from "aws-amplify";
+import Amplify, { Auth } from "aws-amplify";
 import Predictions, {
   AmazonAIPredictionsProvider,
 } from "@aws-amplify/predictions";
@@ -29,14 +29,6 @@ paralleldots.apiKey = "z6AGlBBzF9d8pF3VlsEA2ZSSKvHfwWoL9CvMlybvcOE";
 Amplify.configure(awsconfig);
 Amplify.addPluggable(new AmazonAIPredictionsProvider());
 
-const listener = (data) => {
-  if (data.payload.event === "signIn") {
-    console.log("user signed in");
-  } else {
-    console.log("user signed out");
-  }
-};
-Hub.listen("auth", listener); //Hub for listening to auth events
 
 class Engine extends Component {
   constructor(props) {

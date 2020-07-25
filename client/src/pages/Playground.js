@@ -8,7 +8,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import Amplify, { Auth, Hub } from "aws-amplify";
+import Amplify, { Auth } from "aws-amplify";
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import awsconfig from "../aws-exports";
 
@@ -20,14 +20,6 @@ import queryBuilder from "../functions/queryBuilder";
 
 Amplify.configure(awsconfig);
 
-const listener = (data) => {
-  if (data.payload.event === "signIn") {
-    console.log("user signed in");
-  } else {
-    console.log("user signed out");
-  }
-};
-Hub.listen("auth", listener);
 const api = "https://senti-ment-api.herokuapp.com/";
 
 class Playground extends Component {
